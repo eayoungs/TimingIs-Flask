@@ -1,3 +1,9 @@
+# System
+.DS_Store
+
+# Sublime
+*.sublime-*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
