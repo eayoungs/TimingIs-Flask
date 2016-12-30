@@ -16,7 +16,7 @@ def main():
     if 'credentials' not in flask.session:
         return flask.redirect(flask.url_for('callback'))
     else:
-        return flask.session['credentials']
+        return flask.render_template('index.html')
     
 
 @app.route('/callback')
