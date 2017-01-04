@@ -1,9 +1,11 @@
-from oauth2client.client import OAuth2WebServerFlow
+from oauth2client.client import OAuth2WebServerFlow, OAuth2Credentials
 import flask
 import re
 import uuid
 import json
 import os
+import httplib2
+from googleapiclient import discovery
 
 
 app = flask.Flask(__name__)
@@ -15,8 +17,13 @@ app.secret_key = str(uuid.uuid4())
 def main():
     if 'credentials' not in flask.session:
         return flask.redirect(flask.url_for('callback'))
+    credentials = OAuth2Credentials.from_json(flask.session['credentials'])
+
+    if credentials.access_token_expired:
+        return flask.redirect(flask.url_for('oauth2callback'))
+
     else:
-        return flask.render_template('index.html')
+      return flask.render_template('index.html')
     
 
 @app.route('/callback')
