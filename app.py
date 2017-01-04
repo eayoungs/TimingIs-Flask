@@ -4,8 +4,8 @@ import re
 import uuid
 import json
 import os
-import httplib2
-from googleapiclient import discovery
+# import httplib2
+# from googleapiclient import discovery
 
 
 app = flask.Flask(__name__)
