@@ -23,7 +23,7 @@ def main():
         return flask.redirect(flask.url_for('oauth2callback'))
 
     else:
-      return flask.render_template('index.html')
+      return flask.render_template('g-oath2-landing.html')
     
 
 @app.route('/callback')
