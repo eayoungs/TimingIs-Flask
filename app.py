@@ -4,17 +4,21 @@ import re
 import uuid
 import json
 import os
+from bootstrap_flask import create_app
 # import httplib2
 # from googleapiclient import discovery
 
 
-app = flask.Flask(__name__)
-
+app = create_app()
 app.secret_key = str(uuid.uuid4())
 
 
 @app.route('/')
 def main():
+  return flask.render_template('index.html')
+
+@app.route('/google_oauth2')
+def google_oauth2():
     if 'credentials' not in flask.session:
         return flask.redirect(flask.url_for('callback'))
     credentials = OAuth2Credentials.from_json(flask.session['credentials'])
