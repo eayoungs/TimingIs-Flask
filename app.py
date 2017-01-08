@@ -1,5 +1,5 @@
 from oauth2client.client import OAuth2WebServerFlow, OAuth2Credentials
-import flask
+from flask import Flask, render_template, session, url_for, request, redirect
 import re
 import uuid
 import json
@@ -15,19 +15,19 @@ app.secret_key = str(uuid.uuid4())
 
 @app.route('/')
 def main():
-  return flask.render_template('index.html')
+  return render_template('index.html')
 
 @app.route('/google_oauth2')
 def google_oauth2():
-    if 'credentials' not in flask.session:
-        return flask.redirect(flask.url_for('callback'))
-    credentials = OAuth2Credentials.from_json(flask.session['credentials'])
+    if 'credentials' not in session:
+        return redirect(url_for('callback'))
+    credentials = OAuth2Credentials.from_json(session['credentials'])
 
     if credentials.access_token_expired:
-        return flask.redirect(flask.url_for('oauth2callback'))
+        return redirect(url_for('oauth2callback'))
 
     else:
-      return flask.render_template('g-oath2-landing.html')
+      return render_template('g-oath2-landing.html')
     
 
 @app.route('/callback')
@@ -37,19 +37,19 @@ def callback():
                            scope=os.environ.get('SCOPE'),
                            redirect_uri=os.environ.get('REDIRECT_URI')
                            )
-    if 'code' not in flask.request.args:
+    if 'code' not in request.args:
         auth_uri = flow.step1_get_authorize_url()
-        code_uri = str(flask.redirect(auth_uri))
+        code_uri = str(redirect(auth_uri))
         code = re.search('([^\?code=].+)', code_uri).group(1)
         # http://regexr.com/3ev67
 
-        return flask.redirect(auth_uri)
+        return redirect(auth_uri)
     else:
-        code = flask.request.args.get('code')
+        code = request.args.get('code')
         credentials = flow.step2_exchange(code)
-        flask.session['credentials'] = credentials.to_json()
+        session['credentials'] = credentials.to_json()
 
-        return flask.redirect(flask.url_for('main'))
+        return redirect(flask.url_for('main'))
 
 
 if __name__ == '__main__':
