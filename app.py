@@ -49,7 +49,7 @@ def callback():
         credentials = flow.step2_exchange(code)
         session['credentials'] = credentials.to_json()
 
-        return redirect(flask.url_for('google_oauth2'))
+        return redirect(url_for('google_oauth2'))
 
 
 if __name__ == '__main__':
