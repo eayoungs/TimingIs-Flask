@@ -24,7 +24,7 @@ def google_oauth2():
     credentials = OAuth2Credentials.from_json(session['credentials'])
 
     if credentials.access_token_expired:
-        return redirect(url_for('oauth2callback'))
+        return redirect(url_for('callback'))
 
     else:
       return render_template('g-oath2-landing.html')
@@ -49,9 +49,9 @@ def callback():
         credentials = flow.step2_exchange(code)
         session['credentials'] = credentials.to_json()
 
-        return redirect(flask.url_for('main'))
+        return redirect(flask.url_for('google_oauth2'))
 
 
 if __name__ == '__main__':
-  app.debug = True
+  app.debug = False
   app.run()
