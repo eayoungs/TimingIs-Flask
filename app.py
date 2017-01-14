@@ -5,8 +5,8 @@ import uuid
 import json
 import os
 from bootstrap_flask import create_app
-# import httplib2
-# from googleapiclient import discovery
+import httplib2
+from googleapiclient import discovery
 
 
 app = create_app()
@@ -26,7 +26,9 @@ def google_oauth2():
     if credentials.access_token_expired:
         return redirect(url_for('callback'))
 
-    else:
+    else: # https://developers.google.com/api-client-library/python/auth/web-app
+      http_auth = credentials.authorize(httplib2.Http())
+      service = discovery.build('calendar', 'v3', http=http)
       return render_template('g-oath2-landing.html')
     
 
