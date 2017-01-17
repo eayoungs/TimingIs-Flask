@@ -12,7 +12,7 @@ from googleapiclient import discovery
 app = create_app()
 app.secret_key = str(uuid.uuid4())
 
-baseUrl = "http:timing.is/"
+baseUrl = "http://timing.is/"
 
 @app.route('/')
 def main():
