@@ -27,7 +27,7 @@ def main():
                          subtext1='Find out where your spend your time, setgoals and check in on your progress with minimal effort--all in from withing the calendar you already know & love: Google Calendar',
                          subheading2="Show the muse you're serious",
                          subtext2='You have to show up for your dreams; no one can do it for you but we can give you the tools to stay present',
-                         appBttnUrl=baseURL+"google_oauth2")
+                         appBttnUrl=baseUrl+"google_oauth2")
 
 
 @app.route('/google_oauth2')
@@ -78,7 +78,7 @@ def about_page():
                          quoteAttrib='',
                          subheading1='Read-only parsing of your calendar data',
                          subtext1="Timing.Is will not store your data. It will produce summary charts describing the amount and percent of of total for all unique events, by calendar or time spent in various categories determined by a 'tag'of your choosing, which can be any word or phrase that you want to use. Activity domains, such as physicalsocial, spiritual or mental; categorical markers, like professional, personal or communal. If you want tomodify the code and create your own custom algorithms, you can. Right there in the same page where theresults appear.",
-                         appBttnUrl=baseURL+"google_oauth2")
+                         appBttnUrl=baseUrl+"google_oauth2")
 
 
 @app.route('/contact')
@@ -92,7 +92,7 @@ def contact_page():
                          quoteAttrib='',
                          subheading1='',
                          subtext1="",
-                         appBttnUrl=baseURL+"google_oauth2")
+                         appBttnUrl=baseUrl+"google_oauth2")
 
 
 
