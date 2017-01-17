@@ -78,7 +78,7 @@ def ggloauth_page():
                          quoteAttrib="To revoke authorization visit your Google account @ ",
                          subheading1='',
                          subtext1="",
-                         appBttnUrl=baseUrl+"google_oauth2")
+                         appBttnUrl="https://myaccount.google.com/permissions")
 
 
 @app.route('/about')
