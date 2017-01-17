@@ -42,7 +42,7 @@ def google_oauth2():
     else: # https://developers.google.com/api-client-library/python/auth/web-app
       http_auth = credentials.authorize(httplib2.Http())
       service = discovery.build('calendar', 'v3', http=http_auth)
-      return render_template('g-oath2-landing.html')
+      return ggloauth_page()# render_template('g-oath2-landing.html')
     
 
 @app.route('/callback')
@@ -65,6 +65,20 @@ def callback():
         session['credentials'] = credentials.to_json()
 
         return redirect(url_for('google_oauth2'))
+
+
+@app.route('/ggloauth')
+def ggloauth_page():
+  return render_template('template.html',
+                         homeBttnClass="active",
+                         homeUrl=baseUrl,
+                         aboutUrl=baseUrl+"about",
+                         contactUrl=baseUrl+"contact",
+                         quoteText="Congratulations; you've authorized Timing.Is to access your Google Calendar data!",
+                         quoteAttrib="To revoke authorization visit your Google account @ ",
+                         subheading1='',
+                         subtext1="",
+                         appBttnUrl=baseUrl+"google_oauth2")
 
 
 @app.route('/about')
