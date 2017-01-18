@@ -7,6 +7,7 @@ import os
 from bootstrap_flask import create_app
 import httplib2
 from googleapiclient import discovery
+import forms
 
 
 app = create_app()
@@ -78,7 +79,19 @@ def ggloauth_page():
                          quoteAttrib="To revoke authorization visit your Google account @ ",
                          subheading1='',
                          subtext1="",
-                         appBttnUrl="https://myaccount.google.com/permissions")
+                         appBttnUrl=baseUrl+"register")# "https://myaccount.google.com/permissions")
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = forms.RegistrationForm(request.form)
+    if request.method == 'POST' and form.validate():
+        user = User(form.username.data, form.email.data,
+                    form.password.data)
+        db_session.add(user)
+        flash('Thanks for registering')
+        return redirect(url_for('login'))
+    return render_template('forms_template.html', form=form)
 
 
 @app.route('/about')
@@ -91,7 +104,7 @@ def about_page():
                          quoteText='About',
                          quoteAttrib='',
                          subheading1='Read-only parsing of your calendar data',
-                         subtext1="Timing.Is will not store your data. It will produce summary charts describing the amount and percent of of total for all unique events, by calendar or time spent in various categories determined by a 'tag'of your choosing, which can be any word or phrase that you want to use. Activity domains, such as physicalsocial, spiritual or mental; categorical markers, like professional, personal or communal. If you want tomodify the code and create your own custom algorithms, you can. Right there in the same page where theresults appear.",
+                         subtext1="Timing.Is will not store your data. It will produce summary charts describing the amount and percent of of total for all unique events, by calendar or time spent in various categories determined by a 'tag'of your choosing, which can be any word or phrase that you want to use. Activity domains, such as physical, social, spiritual or mental; categorical markers, like professional, personal or communal. If you want tomodify the code and create your own custom algorithms, you can. Right there in the same page where theresults appear.",
                          appBttnUrl=baseUrl+"google_oauth2")
 
 

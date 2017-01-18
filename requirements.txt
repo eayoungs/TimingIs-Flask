@@ -8,3 +8,5 @@ matplotlib==1.5.3
 pandas==0.19.2
 google-api-python-client==1.6.1
 iso8601==0.1.11
+Flask-WTF==0.14.2
+Flask-SQLAlchemy==2.1
