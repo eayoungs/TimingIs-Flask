@@ -79,7 +79,8 @@ def ggloauth_page():
                          quoteAttrib="To revoke authorization visit your Google account @ ",
                          subheading1='',
                          subtext1="",
-                         appBttnUrl=baseUrl+"register")# "https://myaccount.google.com/permissions")
+                         appBttnUrl=baseUrl+"register",
+                         link="https://myaccount.google.com/permissions")
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -91,7 +92,11 @@ def register():
         db_session.add(user)
         flash('Thanks for registering')
         return redirect(url_for('login'))
-    return render_template('forms_template.html', form=form)
+    return render_template('forms_template.html', form=form,
+                           homeBttnClass="active",
+                           homeUrl=baseUrl,
+                           aboutUrl=baseUrl+"about",
+                           contactUrl=baseUrl+"contact",)
 
 
 @app.route('/about')
