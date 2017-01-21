@@ -7,7 +7,9 @@ import os
 from bootstrap_flask import create_app
 import httplib2
 from googleapiclient import discovery
-import forms
+# import forms
+
+import get_events as ge
 
 
 app = create_app()
@@ -41,9 +43,21 @@ def google_oauth2():
         return redirect(url_for('callback'))
 
     else: # https://developers.google.com/api-client-library/python/auth/web-app
-      http_auth = credentials.authorize(httplib2.Http())
-      service = discovery.build('calendar', 'v3', http=http_auth)
-      return ggloauth_page()# render_template('g-oath2-landing.html')
+        http_auth = credentials.authorize(httplib2.Http())
+        service = discovery.build('calendar', 'v3', http=http_auth)
+        evRange = ge.event_range()
+        # gtEvents = ge.get_events(service, evStart_evEnd, #!calendars)
+
+        return render_template('forms_template.html',
+                               homeBttnClass="active",
+                               homeUrl=baseUrl,
+                               aboutUrl=baseUrl+"about",
+                               contactUrl=baseUrl+"contact",
+                               quoteAttrib="Congratulations; you've authorized Timing.Is to access your Google Calendar data! To revoke authorization visit your Google account @ ",
+                               subheading1=evRange,
+                               # subtext1=gtEvents,
+                               link="https://myaccount.google.com/permissions",
+                               linktext="https://myaccount.google.com/permissions")
     
 
 @app.route('/callback')
@@ -68,35 +82,20 @@ def callback():
         return redirect(url_for('google_oauth2'))
 
 
-@app.route('/ggloauth')
-def ggloauth_page():
-  return render_template('template.html',
-                         homeBttnClass="active",
-                         homeUrl=baseUrl,
-                         aboutUrl=baseUrl+"about",
-                         contactUrl=baseUrl+"contact",
-                         quoteText="Congratulations; you've authorized Timing.Is to access your Google Calendar data!",
-                         quoteAttrib="To revoke authorization visit your Google account @ ",
-                         subheading1='',
-                         subtext1="",
-                         appBttnUrl=baseUrl+"register",
-                         link="https://myaccount.google.com/permissions")
-
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    form = forms.RegistrationForm(request.form)
-    if request.method == 'POST' and form.validate():
-        user = User(form.username.data, form.email.data,
-                    form.password.data)
-        db_session.add(user)
-        flash('Thanks for registering')
-        return redirect(url_for('login'))
-    return render_template('forms_template.html', form=form,
-                           homeBttnClass="active",
-                           homeUrl=baseUrl,
-                           aboutUrl=baseUrl+"about",
-                           contactUrl=baseUrl+"contact",)
+# @app.route('/register', methods=['GET', 'POST'])
+# def register():
+#     form = forms.RegistrationForm(request.form)
+#     if request.method == 'POST' and form.validate():
+#         user = User(form.username.data, form.email.data,
+#                     form.password.data)
+#         db_session.add(user)
+#         flash('Thanks for registering')
+#         return redirect(url_for('login'))
+#     return render_template('forms_template.html', form=form,
+#                            homeBttnClass="active",
+#                            homeUrl=baseUrl,
+#                            aboutUrl=baseUrl+"about",
+#                            contactUrl=baseUrl+"contact",)
 
 
 @app.route('/about')
