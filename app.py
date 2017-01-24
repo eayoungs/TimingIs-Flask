@@ -24,7 +24,7 @@ def main():
                          homeUrl=baseUrl,
                          aboutUrl=baseUrl+"about",
                          contactUrl=baseUrl+"contact",
-                         quoteText='"Everything"',
+                         quoteText='Everything',
                          quoteAttrib='"This Moment is All there Is" --Rumi',
                          subheading1='Build your routine, your way',
                          subtext1='Find out where your spend your time, setgoals and check in on your progress with minimal effort--all in from withing the calendar you already know & love: Google Calendar',
