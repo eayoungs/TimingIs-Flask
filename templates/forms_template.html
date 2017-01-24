@@ -64,6 +64,15 @@
     <p class="lead">{{quoteAttrib}}<a href={{link}}>{{linktext}}</a></p>
   </div>
 
+    {% block content %}
+    <h1>Set Date Range</h1>
+    
+    <form method="POST" action="/">
+        <div>{{ form.dateRange.label }} {{ form.dateRange(rows=2, multiple=True) }}</div>
+        <button type="submit" class="btn">Submit</button>    
+    </form>
+    {% endblock %}
+
     <div class="col-md-6">
       <h4>{{subheading1}}</h4>
       <p>{{subtext1}}</p>
