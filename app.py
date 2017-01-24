@@ -50,14 +50,15 @@ def google_oauth2():
         while True:
             calendar_list = service.calendarList().list(
                                                 pageToken=page_token).execute()
-            calendars = [calendar_list_entry['id'] for
-                             calendar_list_entry in calendar_list['items']]
+            calendarsDct = {}
+            for calendar_list_entry in calendar_list['items']:
+                calendarsDct[calendar_list_entry['summary']] = calendar_list_entry['id']
             page_token = calendar_list.get('nextPageToken')
             if not page_token:
                 break
 
         evStart_evEnd = ge.event_range(relRange='day')
-        gtEvents = ge.get_events(service, evStart_evEnd, calendars)
+        gtEvents = ge.get_events(service, evStart_evEnd, calendarsDct)
 
         return render_template('forms_template.html',
                                homeBttnClass="active",
@@ -65,7 +66,7 @@ def google_oauth2():
                                aboutUrl=baseUrl+"about",
                                contactUrl=baseUrl+"contact",
                                quoteAttrib="Congratulations; you've authorized Timing.Is to access your Google Calendar data! To revoke authorization visit your Google account @ ",
-                               subheading1=calendars,
+                               subheading1=calendarsDct.keys(),
                                subtext1=gtEvents,
                                link="https://myaccount.google.com/permissions",
                                linktext="https://myaccount.google.com/permissions")

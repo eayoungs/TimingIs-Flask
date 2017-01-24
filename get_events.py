@@ -168,24 +168,22 @@ def get_events(service, evStart_evEnd, calendars):
 
     (evStart, evEnd) = evStart_evEnd
     eventsDct = {}
-    for calendar in calendars:
+    for key, value in calendars.items():
         #print('Getting events for Production Calendar for : ', evStart)
-        eventsResult = service.events().list(calendarId=calendar,
-                                             timeMin=evStart,
+        eventsResult = service.events().list(calendarId=value, timeMin=evStart,
                                              timeMax=evEnd, singleEvents=True,
                                              orderBy='startTime').execute()
         events = eventsResult.get('items', [])
 
-        # TODO: Store empty calendars for reporting?
-        # if not events:
-        #     print('No upcoming events found for: '+key)
-        # else:
-        for event in events:
-            event['start'] = event['start'].get('dateTime',
-                                                event['start'].get('date'))
-            event['end'] = event['end'].get('dateTime',
-                                            event['end'].get('date'))
-        eventsDct[calendar] = events
+        if not events:
+            print('No upcoming events found for: '+key)
+        else:
+            for event in events:
+                event['start'] = event['start'].get('dateTime',
+                                                    event['start'].get('date'))
+                event['end'] = event['end'].get('dateTime',
+                                                event['end'].get('date'))
+            eventsDct[key] = events
     evStartEvEnd_eventsDct = (evStart_evEnd, eventsDct)
 
     return evStartEvEnd_eventsDct
