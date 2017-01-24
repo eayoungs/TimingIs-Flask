@@ -24,8 +24,8 @@ def main():
                          homeUrl=baseUrl,
                          aboutUrl=baseUrl+"about",
                          contactUrl=baseUrl+"contact",
-                         quoteText='"This Moment is All There Is"',
-                         quoteAttrib='--Rumi',
+                         quoteText='"Everything"',
+                         quoteAttrib='"This Moment is All there Is" --Rumi',
                          subheading1='Build your routine, your way',
                          subtext1='Find out where your spend your time, setgoals and check in on your progress with minimal effort--all in from withing the calendar you already know & love: Google Calendar',
                          subheading2="Show the muse you're serious",
@@ -133,8 +133,8 @@ def contact_page():
                          contactUrl=baseUrl+"contact",
                          quoteText='Contact',
                          quoteAttrib='',
-                         subheading1='',
-                         subtext1="",
+                         subheading1='Google Voice',
+                         subtext1='503 468 7021',
                          appBttnUrl=baseUrl+"google_oauth2")
 
 
