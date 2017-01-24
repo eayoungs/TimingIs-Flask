@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Timing.Is</title>
+    <title>Timing is...</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
 
@@ -57,25 +57,17 @@
     <li class={{aboutBttnClass}}><a href={{aboutUrl}}>About</a></li>
     <li class={{contactBttnClass}}><a href={{contactUrl}}>Contact</a></li>
   </ul>
-  <h3 class="text-muted">Timing.Is</h3>
+  <h3 class="text-muted">Timing is...</h3>
   <hr>
   <div class="jumbotron">
     <h1>{{quoteText}}</h1>
-    <p class="lead">{{quoteAttrib}}</p>
+    <p class="lead">{{quoteAttrib}}<a href={{link}}>{{linktext}}</a></p>
   </div>
 
-  <div>
-    {% from "_formhelpers.html" import render_field %}
-    <form method=post>
-      <dl>
-        {{ render_field(form.username) }}
-        {{ render_field(form.email) }}
-        {{ render_field(form.password) }}
-        {{ render_field(form.confirm) }}
-        {{ render_field(form.accept_tos) }}
-      </dl>
-      <p><input type=submit value=Register>
-    </form>
+    <div class="col-md-6">
+      <h4>{{subheading1}}</h4>
+      <p>{{subtext1}}</p>
+    </div>
   </div>
 
 <!--
