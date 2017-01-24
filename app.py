@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from oauth2client.client import OAuth2WebServerFlow, OAuth2Credentials
 from flask import Flask, render_template, session, url_for, request, redirect
 import re
@@ -7,8 +9,8 @@ import os
 from bootstrap_flask import create_app
 import httplib2
 from googleapiclient import discovery
-# import forms
 
+import forms
 import get_events as ge
 
 
@@ -57,19 +59,37 @@ def google_oauth2():
             if not page_token:
                 break
 
-        evStart_evEnd = ge.event_range(relRange='day')
-        gtEvents = ge.get_events(service, evStart_evEnd, calendarsDct)
+        form = forms.LanguageForm(request.form)
+        if request.method == 'POST' and form.validate():
+            dateRange = form.dateRange.data
 
-        return render_template('forms_template.html',
-                               homeBttnClass="active",
-                               homeUrl=baseUrl,
-                               aboutUrl=baseUrl+"about",
-                               contactUrl=baseUrl+"contact",
-                               quoteAttrib="Congratulations; you've authorized Timing.Is to access your Google Calendar data! To revoke authorization visit your Google account @ ",
-                               subheading1=calendarsDct.keys(),
-                               subtext1=gtEvents,
-                               link="https://myaccount.google.com/permissions",
-                               linktext="https://myaccount.google.com/permissions")
+            evStart_evEnd = ge.event_range(relRange='day')
+            gtEvents = ge.get_events(service, evStart_evEnd, calendarsDct)
+
+            return render_template('forms_filled_template.html',
+                                   form=form,
+                                   homeBttnClass="active",
+                                   homeUrl=baseUrl,
+                                   aboutUrl=baseUrl+"about",
+                                   contactUrl=baseUrl+"contact",
+                                   quoteAttrib="Congratulations; you've authorized Timing.Is to access your Google Calendar data! To revoke authorization visit your Google account @ ",
+                                   subheading1=calendarsDct.keys(),
+                                   subtext1=dateRange,
+                                   link="https://myaccount.google.com/permissions",
+                                   linktext="https://myaccount.google.com/permissions")
+
+        else:
+            return render_template('forms_template.html',
+                                   form=form,
+                                   homeBttnClass="active",
+                                   homeUrl=baseUrl,
+                                   aboutUrl=baseUrl+"about",
+                                   contactUrl=baseUrl+"contact",
+                                   quoteAttrib="Congratulations; you've authorized Timing.Is to access your Google Calendar data! To revoke authorization visit your Google account @ ",
+                                   subheading1=calendarsDct.keys(),
+                                   subtext1='',
+                                   link="https://myaccount.google.com/permissions",
+                                   linktext="https://myaccount.google.com/permissions")
     
 
 @app.route('/callback')
@@ -120,7 +140,7 @@ def about_page():
                          quoteText='About',
                          quoteAttrib='',
                          subheading1='Read-only parsing of your calendar data',
-                         subtext1="Timing.Is will not store your data. It will produce summary charts describing the amount and percent of of total for all unique events, by calendar or time spent in various categories determined by a 'tag'of your choosing, which can be any word or phrase that you want to use. Activity domains, such as physical, social, spiritual or mental; categorical markers, like professional, personal or communal. If you want tomodify the code and create your own custom algorithms, you can. Right there in the same page where theresults appear.",
+                         subtext1="Timing.Is will not store your data. It will produce summary charts describing the amount and percent of of total for all unique events, by calendar or time spent in various categories determined by a 'tag'of your choosing, which can be any word or phrase that you want to use. Activity domains, such as physical, social, spiritual or mental; categorical markers, like professional, personal or communal.",
                          appBttnUrl=baseUrl+"google_oauth2")
 
 
