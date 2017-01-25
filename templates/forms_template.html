@@ -64,33 +64,21 @@
     <p class="lead">{{quoteAttrib}}<a href={{link}}>{{linktext}}</a></p>
   </div>
 
-    {% block content %}
-    <h1>Set Date Range</h1>
-    
-    <form method="POST" action="/">
-        <div>{{ form.dateRange.label }} {{ form.dateRange(rows=2, multiple=True) }}</div>
-        <button type="submit" class="btn">Submit</button>    
-    </form>
-    {% endblock %}
+  <div class="row marketing">
+    <div class="col-md-6">
+      <input id = "csrf_token" name = "csrf_token" type = "hidden" />
+      <label for = "name">Name Of Student</label><br>
+      <input id = "name" name = "name" type = "text" value = "" />
+      {% for message in form.name.errors %}
+        {{ message }}
+      {% endfor %}
+    </div>
 
     <div class="col-md-6">
       <h4>{{subheading1}}</h4>
-      <p>{{subtext1}}</p>
+      <p>{{subtext1}}</p> 
     </div>
   </div>
-
-<!--
-    <div class="row marketing">
-      <div class="col-md-6">
-        <h4>{{subheading1}}</h4>
-        <p>{{subtext1}}</p> 
-      </div>
-     <div class="col-md-6">
-       <h4>{{subheading2}}</h4>
-       <p>{{subtext2}}</p>
-     </div>
-    </div>
--->
 
   <script src="{{ url_for('static', filename='js/jquery-3.1.1.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>

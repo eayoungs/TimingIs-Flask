@@ -10,7 +10,7 @@ from bootstrap_flask import create_app
 import httplib2
 from googleapiclient import discovery
 
-import forms
+from forms import ContactForm
 import get_events as ge
 
 
@@ -59,37 +59,22 @@ def google_oauth2():
             if not page_token:
                 break
 
-        form = forms.LanguageForm(request.form)
-        if request.method == 'POST' and form.validate():
-            dateRange = form.dateRange.data
+        form = ContactForm()
+        
+        evStart_evEnd = ge.event_range(relRange='day')
+        gtEvents = ge.get_events(service, evStart_evEnd, calendarsDct)
 
-            evStart_evEnd = ge.event_range(relRange='day')
-            gtEvents = ge.get_events(service, evStart_evEnd, calendarsDct)
-
-            return render_template('forms_filled_template.html',
-                                   form=form,
-                                   homeBttnClass="active",
-                                   homeUrl=baseUrl,
-                                   aboutUrl=baseUrl+"about",
-                                   contactUrl=baseUrl+"contact",
-                                   quoteAttrib="Congratulations; you've authorized Timing.Is to access your Google Calendar data! To revoke authorization visit your Google account @ ",
-                                   subheading1=calendarsDct.keys(),
-                                   subtext1=dateRange,
-                                   link="https://myaccount.google.com/permissions",
-                                   linktext="https://myaccount.google.com/permissions")
-
-        else:
-            return render_template('forms_template.html',
-                                   form=form,
-                                   homeBttnClass="active",
-                                   homeUrl=baseUrl,
-                                   aboutUrl=baseUrl+"about",
-                                   contactUrl=baseUrl+"contact",
-                                   quoteAttrib="Congratulations; you've authorized Timing.Is to access your Google Calendar data! To revoke authorization visit your Google account @ ",
-                                   subheading1=calendarsDct.keys(),
-                                   subtext1='',
-                                   link="https://myaccount.google.com/permissions",
-                                   linktext="https://myaccount.google.com/permissions")
+        return render_template('forms_template.html',
+                               form=form,
+                               homeBttnClass="active",
+                               homeUrl=baseUrl,
+                               aboutUrl=baseUrl+"about",
+                               contactUrl=baseUrl+"contact",
+                               quoteAttrib="Congratulations; you've authorized Timing.Is to access your Google Calendar data! To revoke authorization visit your Google account @ ",
+                               subheading1='',# calendarsDct.keys(),
+                               subtext1='',# evStart_evEnd,
+                               link="https://myaccount.google.com/permissions",
+                               linktext="https://myaccount.google.com/permissions")
     
 
 @app.route('/callback')
