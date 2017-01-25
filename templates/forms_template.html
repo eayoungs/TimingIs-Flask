@@ -64,33 +64,48 @@
     <p class="lead">{{quoteAttrib}}<a href={{link}}>{{linktext}}</a></p>
   </div>
 
-    {% block content %}
-    <h1>Set Date Range</h1>
-    
-    <form method="POST" action="/">
-        <div>{{ form.dateRange.label }} {{ form.dateRange(rows=2, multiple=True) }}</div>
-        <button type="submit" class="btn">Submit</button>    
-    </form>
-    {% endblock %}
-
+  <div class="row marketing">
     <div class="col-md-6">
-      <h4>{{subheading1}}</h4>
-      <p>{{subtext1}}</p>
+      {% for message in form.name.errors %}
+         <div>{{ message }}</div>
+      {% endfor %}
+      
+      {% for message in form.email.errors %}
+         <div>{{ message }}</div>
+      {% endfor %}
+      
+      <form action="/google_oauth2" method = post>
+         <fieldset>
+            <legend>Contact Form</legend>
+            {{ form.hidden_tag() }}
+            
+            <div style = font-size:20px; font-weight:bold; margin-left:150px;>
+               {{ form.name.label }}<br>
+               {{ form.name }}
+               <br>
+               
+               {{ form.Gender.label }} {{ form.Gender }}
+               {{ form.Address.label }}<br>
+               {{ form.Address }}
+               <br>
+               
+               {{ form.email.label }}<br>
+               {{ form.email }}
+               <br>
+               
+               {{ form.Age.label }}<br>
+               {{ form.Age }}
+               <br>
+               
+               {{ form.language.label }}<br>
+               {{ form.language }}
+               <br>
+               {{ form.submit }}
+            </div>
+            
+         </fieldset>
+      </form>
     </div>
-  </div>
-
-<!--
-    <div class="row marketing">
-      <div class="col-md-6">
-        <h4>{{subheading1}}</h4>
-        <p>{{subtext1}}</p> 
-      </div>
-     <div class="col-md-6">
-       <h4>{{subheading2}}</h4>
-       <p>{{subtext2}}</p>
-     </div>
-    </div>
--->
 
   <script src="{{ url_for('static', filename='js/jquery-3.1.1.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>

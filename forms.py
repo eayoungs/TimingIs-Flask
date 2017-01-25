@@ -1,21 +1,19 @@
-
-# # http://flask.pocoo.org/docs/0.12/patterns/wtforms/
-# from wtforms import Form, BooleanField, StringField, PasswordField, validators
-# 
-# 
-# class RegistrationForm(Form):
-#     username = StringField('Username', [validators.Length(min=4, max=25)])
-#     email = StringField('Email Address', [validators.Length(min=6, max=35)])
-#     password = PasswordField('New Password', [
-#         validators.DataRequired(),
-#         validators.EqualTo('confirm', message='Passwords must match')
-#     ])
-#     confirm = PasswordField('Repeat Password')
-#     accept_tos = BooleanField('I accept the TOS', [validators.DataRequired()])
-
-from wtforms import Form, SelectMultipleField
+from flask_wtf import Form
+from wtforms import TextField, IntegerField, TextAreaField, SubmitField, RadioField, SelectField
 
 
-class LanguageForm(Form):
-    dateRange = SelectMultipleField(u'Time Period', choices=[('day', 'day'),
-                                                             ('week', 'week')])
+from wtforms import validators, ValidationError
+
+class ContactForm(Form):
+   name = TextField("Name Of Student",
+                    [validators.Required("Please enter your name.")])
+   Gender = RadioField('Gender', choices = [('M','Male'),('F','Female')])
+   Address = TextAreaField("Address")
+   
+   email = TextField("Email",[validators.Required("Please enter your email address."),
+      validators.Email("Please enter your email address.")])
+   
+   Age = IntegerField("age")
+   language = SelectField('Languages',
+                          choices = [('cpp', 'C++'), ('py', 'Python')])
+   submit = SubmitField("Send")
