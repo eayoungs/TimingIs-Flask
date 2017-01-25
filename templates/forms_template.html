@@ -66,19 +66,53 @@
 
   <div class="row marketing">
     <div class="col-md-6">
-      <input id = "csrf_token" name = "csrf_token" type = "hidden" />
-      <label for = "name">Name Of Student</label><br>
-      <input id = "name" name = "name" type = "text" value = "" />
       {% for message in form.name.errors %}
-        {{ message }}
+         <div>{{ message }}</div>
       {% endfor %}
+      
+      {% for message in form.email.errors %}
+         <div>{{ message }}</div>
+      {% endfor %}
+      
+      <form action = "http://localhost:5000/contact" method = post>
+         <fieldset>
+            <legend>Contact Form</legend>
+            {{ form.hidden_tag() }}
+            
+            <div style = font-size:20px; font-weight:bold; margin-left:150px;>
+               {{ form.name.label }}<br>
+               {{ form.name }}
+               <br>
+               
+               {{ form.Gender.label }} {{ form.Gender }}
+               {{ form.Address.label }}<br>
+               {{ form.Address }}
+               <br>
+               
+               {{ form.email.label }}<br>
+               {{ form.email }}
+               <br>
+               
+               {{ form.Age.label }}<br>
+               {{ form.Age }}
+               <br>
+               
+               {{ form.language.label }}<br>
+               {{ form.language }}
+               <br>
+               {{ form.submit }}
+            </div>
+            
+         </fieldset>
+      </form>
     </div>
-
+<!--
     <div class="col-md-6">
       <h4>{{subheading1}}</h4>
       <p>{{subtext1}}</p> 
     </div>
   </div>
+-->
 
   <script src="{{ url_for('static', filename='js/jquery-3.1.1.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>

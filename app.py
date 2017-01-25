@@ -35,7 +35,7 @@ def main():
                          appBttnUrl=baseUrl+"google_oauth2")
 
 
-@app.route('/google_oauth2')
+@app.route('/google_oauth2', methods = ['GET', 'POST'])
 def google_oauth2():
     if 'credentials' not in session:
         return redirect(url_for('callback'))
@@ -60,21 +60,30 @@ def google_oauth2():
                 break
 
         form = ContactForm()
+        return render_template('contact.html', form=form)
+        #if request.method == 'GET':
+            #if form.validate() == False:
+            #   flash('All fields are required.')
+            #   return render_template('contact.html', form = form) 
+            #elif request.method == 'GET':
+            #   return render_template('contact.html', form = form)
+            #else:
+            #   return render_template('success.html')
         
-        evStart_evEnd = ge.event_range(relRange='day')
-        gtEvents = ge.get_events(service, evStart_evEnd, calendarsDct)
+        #evStart_evEnd = ge.event_range(relRange='day')
+        #gtEvents = ge.get_events(service, evStart_evEnd, calendarsDct)
 
-        return render_template('forms_template.html',
-                               form=form,
-                               homeBttnClass="active",
-                               homeUrl=baseUrl,
-                               aboutUrl=baseUrl+"about",
-                               contactUrl=baseUrl+"contact",
-                               quoteAttrib="Congratulations; you've authorized Timing.Is to access your Google Calendar data! To revoke authorization visit your Google account @ ",
-                               subheading1='',# calendarsDct.keys(),
-                               subtext1='',# evStart_evEnd,
-                               link="https://myaccount.google.com/permissions",
-                               linktext="https://myaccount.google.com/permissions")
+        #return render_template('forms_template.html',
+        #                       form=form,
+        #                       homeBttnClass="active",
+        #                       homeUrl=baseUrl,
+        #                       aboutUrl=baseUrl+"about",
+        #                       contactUrl=baseUrl+"contact",
+        #                       quoteAttrib="Congratulations; you've authorized Timing.Is to access your Google Calendar data! To revoke #authorization visit your Google account @ ",
+        #                       subheading1='',# calendarsDct.keys(),
+        #                       subtext1='',# evStart_evEnd,
+        #                       link="https://myaccount.google.com/permissions",
+        #                       linktext="https://myaccount.google.com/permissions")
     
 
 @app.route('/callback')
