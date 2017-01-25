@@ -60,7 +60,18 @@ def google_oauth2():
                 break
 
         form = ContactForm()
-        return render_template('contact.html', form=form)
+        return render_template('forms_template.html', form=form,
+                               homeBttnClass="active",
+                               homeUrl=baseUrl,
+                               aboutUrl=baseUrl+"about",
+                               contactUrl=baseUrl+"contact",
+                               quoteAttrib="Congratulations; you've authorized Timing.Is to access your Google Calendar data! To revoke #authorization visit your Google account @ ",
+                               subheading1='',# calendarsDct.keys(),
+                               subtext1='',# evStart_evEnd,
+                               link="https://myaccount.google.com/permissions",
+                               linktext="https://myaccount.google.com/permissions"
+                               )
+
         #if request.method == 'GET':
             #if form.validate() == False:
             #   flash('All fields are required.')
@@ -73,18 +84,6 @@ def google_oauth2():
         #evStart_evEnd = ge.event_range(relRange='day')
         #gtEvents = ge.get_events(service, evStart_evEnd, calendarsDct)
 
-        #return render_template('forms_template.html',
-        #                       form=form,
-        #                       homeBttnClass="active",
-        #                       homeUrl=baseUrl,
-        #                       aboutUrl=baseUrl+"about",
-        #                       contactUrl=baseUrl+"contact",
-        #                       quoteAttrib="Congratulations; you've authorized Timing.Is to access your Google Calendar data! To revoke #authorization visit your Google account @ ",
-        #                       subheading1='',# calendarsDct.keys(),
-        #                       subtext1='',# evStart_evEnd,
-        #                       link="https://myaccount.google.com/permissions",
-        #                       linktext="https://myaccount.google.com/permissions")
-    
 
 @app.route('/callback')
 def callback():
