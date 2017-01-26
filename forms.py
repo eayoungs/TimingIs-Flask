@@ -1,19 +1,22 @@
 from flask_wtf import Form
-from wtforms import TextField, IntegerField, TextAreaField, SubmitField, RadioField, SelectField
+from wtforms import TextField, IntegerField, TextAreaField, SubmitField, SelectField, SelectField
 
 
 from wtforms import validators, ValidationError
 
 class ContactForm(Form):
-   name = TextField("Name Of Student",
-                    [validators.Required("Please enter your name.")])
-   Gender = RadioField('Gender', choices = [('M','Male'),('F','Female')])
-   Address = TextAreaField("Address")
+   """ """
    
-   email = TextField("Email",[validators.Required("Please enter your email address."),
-      validators.Email("Please enter your email address.")])
+   Calendar = SelectField('Calendar', choices = [('1','Cal1'),('2','Cal2')])
+
+   DateRange = SelectField('Date Range',
+                          choices = [('day', 'Today'), ('week', 'This Week')])
    
-   Age = IntegerField("age")
-   language = SelectField('Languages',
-                          choices = [('cpp', 'C++'), ('py', 'Python')])
+   StartDate = TextField("Start Date",[validators.Required("Please enter a valid date range in iso8601 format")])
+
+   EndDate = TextField("End Date",[validators.Required("Please enter a valid date range in iso8601 format")])
+   
+   Tag = TextField("Tag",
+                   [validators.Required("Enter a tag to filter events by")])
+
    submit = SubmitField("Send")
