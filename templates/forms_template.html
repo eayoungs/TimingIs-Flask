@@ -66,45 +66,49 @@
 
   <div class="row marketing">
     <div class="col-md-6">
-      {% for message in form.name.errors %}
+      {% for message in form.EndDate.errors %}
          <div>{{ message }}</div>
       {% endfor %}
       
-      {% for message in form.email.errors %}
+      {% for message in form.StartDate.errors %}
          <div>{{ message }}</div>
       {% endfor %}
       
       <form action="/google_oauth2" method = post>
          <fieldset>
-            <legend>Contact Form</legend>
+            <legend>Options</legend>
             {{ form.hidden_tag() }}
             
-            <div style = font-size:20px; font-weight:bold; margin-left:150px;>
-               {{ form.name.label }}<br>
-               {{ form.name }}
+            <div style = font-size:20px; font-weight:bold; margin-left:150px;>               
+               {{ form.Calendar.label }} {{ form.Calendar }}
                <br>
                
-               {{ form.Gender.label }} {{ form.Gender }}
-               {{ form.Address.label }}<br>
-               {{ form.Address }}
+               {{ form.DateRange.label }}<br>
+               {{ form.DateRange }}
                <br>
                
-               {{ form.email.label }}<br>
-               {{ form.email }}
+               {{ form.StartDate.label }}<br>
+               {{ form.StartDate }}
                <br>
-               
-               {{ form.Age.label }}<br>
-               {{ form.Age }}
+
+               {{ form.EndDate.label }}<br>
+               {{ form.EndDate }}
                <br>
-               
-               {{ form.language.label }}<br>
-               {{ form.language }}
+
+               {{ form.Tag.label }}<br>
+               {{ form.Tag }}
                <br>
-               {{ form.submit }}
+
+               <br>{{ form.submit }}
             </div>
             
          </fieldset>
       </form>
+<!--
+    <div class="col-md-6">
+      <h4>{{ subheading1 }}</h4> 
+    </div>
+-->    
     </div>
 
   <script src="{{ url_for('static', filename='js/jquery-3.1.1.min.js') }}"></script>
