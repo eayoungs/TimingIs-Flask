@@ -65,8 +65,6 @@ def google_oauth2():
                 break
 
         form.Calendars.choices = calendarsDct.items()
-        #evStart_evEnd = ge.event_range(relRange='day')
-        #gtEvents = ge.get_events(service, evStart_evEnd, calendarsDct)
 
         if request.method ==  'POST':
             if form.validate() == False:
@@ -80,6 +78,11 @@ def google_oauth2():
                                        linktext="https://myaccount.google.com/permissions"
                                    )
             else:
+                calendarsNms = form.Calendars
+                #evStart_evEnd = ge.event_range(relRange=form.DateRange)
+                #gtEvents = ge.get_events(
+                #                 service, evStart_evEnd, calendarsSelectedDct)
+
                 return render_template('forms_filled_template.html', form=form,
                                        homeBttnClass="active",
                                        homeUrl=baseUrl,
@@ -87,7 +90,7 @@ def google_oauth2():
                                        contactUrl=baseUrl+"contact",
                                        quoteAttrib="Congratulations; you've authorized Timing.Is to access your Google Calendar data! To revoke #authorization visit your Google account @ ",
                                        subheading1='Results',
-                                       subtext1=form.Tag,
+                                       subtext1=calendarsNms,
                                        link="https://myaccount.google.com/permissions",
                                        linktext="https://myaccount.google.com/permissions"
                                    )
