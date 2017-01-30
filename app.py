@@ -10,7 +10,7 @@ from bootstrap_flask import create_app
 import httplib2
 from googleapiclient import discovery
 
-from forms import ContactForm
+from forms import CalendarSelectForm
 import get_events as ge
 
 
@@ -45,7 +45,29 @@ def google_oauth2():
         return redirect(url_for('callback'))
 
     else:
-        form = ContactForm()
+        form = CalendarSelectForm()
+        # https://developers.google.com/api-client-library/python/auth/web-app
+
+        http_auth = credentials.authorize(httplib2.Http())
+        service = discovery.build('calendar', 'v3', http=http_auth)
+        
+        page_token = None# https://developers.google.com/google-apps/calendar/v3/reference/calendarList/list#try-it
+        while True:
+            calendar_list = service.calendarList().list(
+                                        pageToken=page_token).execute()
+            calendarsDct = {}
+            for calendar_list_entry in calendar_list['items']:
+                calendarsDct[
+                calendar_list_entry['id']] = calendar_list_entry[
+                                                                'summary']
+            page_token = calendar_list.get('nextPageToken')
+            if not page_token:
+                break
+
+        form.Calendars.choices = calendarsDct.items()
+        #evStart_evEnd = ge.event_range(relRange='day')
+        #gtEvents = ge.get_events(service, evStart_evEnd, calendarsDct)
+
         if request.method ==  'POST':
             if form.validate() == False:
                 return render_template('forms_template.html', form=form,
@@ -57,25 +79,7 @@ def google_oauth2():
                                        link="https://myaccount.google.com/permissions",
                                        linktext="https://myaccount.google.com/permissions"
                                    )
-            else:# https://developers.google.com/api-client-library/python/auth/web-app
-                """
-                http_auth = credentials.authorize(httplib2.Http())
-                service = discovery.build('calendar', 'v3', http=http_auth)
-        
-                page_token = None# https://developers.google.com/google-apps/calendar/v3/reference/calendarList/list#try-it
-                while True:
-                    calendar_list = service.calendarList().list(
-                                                        pageToken=page_token).execute()
-                    calendarsDct = {}
-                    for calendar_list_entry in calendar_list['items']:
-                        calendarsDct[calendar_list_entry['summary']] = calendar_list_entry['id']
-                    page_token = calendar_list.get('nextPageToken')
-                    if not page_token:
-                        break
-                evStart_evEnd = ge.event_range(relRange='day')
-                gtEvents = ge.get_events(service, evStart_evEnd, calendarsDct)
-                """
-
+            else:
                 return render_template('forms_filled_template.html', form=form,
                                        homeBttnClass="active",
                                        homeUrl=baseUrl,
