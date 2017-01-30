@@ -10,7 +10,7 @@ from bootstrap_flask import create_app
 import httplib2
 from googleapiclient import discovery
 
-from forms import ContactForm
+from forms import CalendarSelectForm
 import get_events as ge
 
 
@@ -45,7 +45,7 @@ def google_oauth2():
         return redirect(url_for('callback'))
 
     else:
-        form = ContactForm()
+        form = CalendarSelectForm()
         if request.method ==  'POST':
             if form.validate() == False:
                 return render_template('forms_template.html', form=form,
