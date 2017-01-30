@@ -58,8 +58,8 @@ def google_oauth2():
             calendarsDct = {}
             for calendar_list_entry in calendar_list['items']:
                 calendarsDct[
-                calendar_list_entry['summary']] = calendar_list_entry[
-                                                                'id']
+                calendar_list_entry['id']] = calendar_list_entry[
+                                                                'summary']
             page_token = calendar_list.get('nextPageToken')
             if not page_token:
                 break
