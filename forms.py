@@ -7,7 +7,7 @@ from wtforms import validators, ValidationError
 class CalendarSelectForm(Form):
    """ """
    
-   Calendar = SelectField('Calendar', choices = [('1','Cal1'),('2','Cal2')])
+   Calendars = SelectField('Calendar')
 
    DateRange = SelectField('Date Range',
                           choices = [('day', 'Today'), ('week', 'This Week')])
