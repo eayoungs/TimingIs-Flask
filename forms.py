@@ -1,5 +1,5 @@
 from flask_wtf import Form
-from wtforms import TextField, IntegerField, TextAreaField, SubmitField, SelectField, SelectField
+from wtforms import TextField, IntegerField, TextAreaField, SubmitField, SelectField, SelectMultipleField
 
 
 from wtforms import validators, ValidationError
@@ -7,7 +7,7 @@ from wtforms import validators, ValidationError
 class CalendarSelectForm(Form):
    """ """
    
-   Calendars = SelectField('Calendar')
+   Calendars = SelectMultipleField('Calendar')
 
    DateRange = SelectField('Date Range',
                           choices = [('day', 'Today'), ('week', 'This Week')])
