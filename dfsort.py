@@ -60,7 +60,7 @@ def summarize_cals_durs(calPerTotHrsDct):
     sumCumCalTotHrs = sum(cumCalTotHrsLst, timedelta())
     allCalDurTotSec = sumCumCalTotHrs.total_seconds()
 
-    colNames = ['calendar', 'hours', 'percent']
+    colNames = ['Unique Events', 'Hours', 'Percent']
     calDursDF = pd.DataFrame()
     for key, value in calPerTotHrsDct.items():
         thisCalDurTotSec = value.total_seconds()
