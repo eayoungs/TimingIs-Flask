@@ -106,8 +106,10 @@
     </div>
 
     <div class="col-md-6">
-      <h4>{{ subheading1 }}</h4>
-      <p>{{ subtext1 }}</p> 
+      {% for table in tables %}
+        <h2>{{titles[loop.index]}}</h2>
+        <p>{{ table|safe }}</p>
+      {% endfor %}
     </div>
 
   </div>

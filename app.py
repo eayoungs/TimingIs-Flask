@@ -86,8 +86,8 @@ def google_oauth2():
                 evStartEvEnd_calEvDfsDct = dfs.add_durations(
                                                         evStartEvEnd_eventsDct)
                 calWorkTypesDct={}
-                #titles=[]
-                #tables=[]
+                titles=[]
+                tables=[]
                 for key,value in calendarsSelectedDct.items():
                     workTypesDct = dfs.get_work_types(evStartEvEnd_calEvDfsDct,
                                                       key)
@@ -97,22 +97,22 @@ def google_oauth2():
                     (calDursDF,
                      fmatSumCumCalTotHrs) =calDursDF_fmatSumCumCalTotHrs
 
-                    #titles.append(key)
-                    #tables.append(calDursDF.to_html())
+                    titles.append(key)
+                    tables.append(calDursDF.to_html())
 
-                    calWorkTypesDct[key] = (calDursDF.to_html(),
-                                            fmatSumCumCalTotHrs)
+                    #calWorkTypesDct[key] = (calDursDF.to_html(),
+                    #                        fmatSumCumCalTotHrs)
 
                 return render_template('forms_filled_template.html', form=form,
-                                       #titles=titles,
-                                       #tables=tables,
+                                       titles=titles,
+                                       tables=tables,
                                        homeBttnClass="active",
                                        homeUrl=baseUrl,
                                        aboutUrl=baseUrl+"about",
                                        contactUrl=baseUrl+"contact",
                                        quoteAttrib="Congratulations; you've authorized Timing.Is to access your Google Calendar data! To revoke #authorization visit your Google account @ ",
-                                       subheading1='Results',
-                                       subtext1=calWorkTypesDct,
+                                       #subheading1=titles,
+                                       #subtext1=tables,
                                        link="https://myaccount.google.com/permissions",
                                        linktext="https://myaccount.google.com/permissions"
                                        )
