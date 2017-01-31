@@ -78,8 +78,9 @@ def google_oauth2():
                                        linktext="https://myaccount.google.com/permissions"
                                    )
             else:
-                calendarsNms = form.Calendars
-                #evStart_evEnd = ge.event_range(relRange=form.DateRange)
+                calendarsNms = form.Calendars.data
+
+                #evStart_evEnd = ge.event_range(relRange=form.DateRange.data)
                 #gtEvents = ge.get_events(
                 #                 service, evStart_evEnd, calendarsSelectedDct)
 
