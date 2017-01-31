@@ -78,6 +78,7 @@ def summarize_cals_durs(calPerTotHrsDct):
 def get_work_types(evStartEvEnd_calEvDfsDct, calendar):
     """ """
 
+    # TODO: Iterate to accomodate multiple calendars
     (evStart_evEnd, calEvDfDct) = evStartEvEnd_calEvDfsDct
     billingCal = calEvDfDct[calendar]
     workTypes = billingCal.summary.unique()
