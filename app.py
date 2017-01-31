@@ -12,6 +12,7 @@ from googleapiclient import discovery
 
 from forms import CalendarSelectForm
 import get_events as ge
+import dfsort as dfs
 
 
 app = create_app()
@@ -79,8 +80,13 @@ def google_oauth2():
                 calendarsSelectedDct = {value:key for key,value in
                           form.Calendars.choices if key in form.Calendars.data}
                 evStart_evEnd = ge.event_range(relRange=form.DateRange.data)
-                gtEvents = ge.get_events(
-                                  service, evStart_evEnd, calendarsSelectedDct)
+                evStartEvEnd_eventsDct = ge.get_events(service, evStart_evEnd,
+                                                       calendarsSelectedDct)
+                evStartEvEnd_calEvDfsDct = dfs.add_durations(
+                                                        evStartEvEnd_eventsDct)
+                (evStart_evEnd, calEvDFsDct) = evStartEvEnd_calEvDfsDct
+                calDursSmry = dfs.get_cals_durs(calEvDFsDct)
+                test = dfs.summarize_cals_durs(calDursSmry)
 
                 return render_template('forms_filled_template.html', form=form,
                                        homeBttnClass="active",
@@ -89,7 +95,7 @@ def google_oauth2():
                                        contactUrl=baseUrl+"contact",
                                        quoteAttrib="Congratulations; you've authorized Timing.Is to access your Google Calendar data! To revoke #authorization visit your Google account @ ",
                                        subheading1='Results',
-                                       subtext1=gtEvents,
+                                       subtext1=test,
                                        link="https://myaccount.google.com/permissions",
                                        linktext="https://myaccount.google.com/permissions"
                                        )
