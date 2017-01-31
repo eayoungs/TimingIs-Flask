@@ -74,13 +74,13 @@ def google_oauth2():
                                        quoteAttrib="Congratulations; you've authorized Timing.Is to access your Google Calendar data! To revoke #authorization visit your Google account @ ",
                                        link="https://myaccount.google.com/permissions",
                                        linktext="https://myaccount.google.com/permissions"
-                                   )
+                                       )
             else:
-                calendarsSelectedDct = {key:value for key,value in form.Calendars.choices if key in form.Calendars.data}
-                # dict(form.Calendars.choices).get(form.Calendars.data)
-                #evStart_evEnd = ge.event_range(relRange=form.DateRange.data)
-                #gtEvents = ge.get_events(
-                #                  service, evStart_evEnd, calendarsSelectedDct)
+                calendarsSelectedDct = {value:key for key,value in
+                          form.Calendars.choices if key in form.Calendars.data}
+                evStart_evEnd = ge.event_range(relRange=form.DateRange.data)
+                gtEvents = ge.get_events(
+                                  service, evStart_evEnd, calendarsSelectedDct)
 
                 return render_template('forms_filled_template.html', form=form,
                                        homeBttnClass="active",
@@ -89,10 +89,10 @@ def google_oauth2():
                                        contactUrl=baseUrl+"contact",
                                        quoteAttrib="Congratulations; you've authorized Timing.Is to access your Google Calendar data! To revoke #authorization visit your Google account @ ",
                                        subheading1='Results',
-                                       subtext1=calendarsSelectedDct,
+                                       subtext1=gtEvents,
                                        link="https://myaccount.google.com/permissions",
                                        linktext="https://myaccount.google.com/permissions"
-                                   )
+                                       )
 
         elif request.method == 'GET':
             return render_template('forms_template.html', form=form,
@@ -166,8 +166,8 @@ def about_page():
                          quoteAttrib='',
                          subheading1='Read-only parsing of your calendar data',
                          subtext1="Timing.Is will not store your data. It will produce summary charts describing the amount and percent of of total for all unique events, by calendar or time spent in various categories determined by a 'tag'of your choosing, which can be any word or phrase that you want to use. Activity domains, such as physical, social, spiritual or mental; categorical markers, like professional, personal or communal.",
-                         appBttnUrl=baseUrl+"google_oauth2")
-
+                         appBttnUrl=baseUrl+"google_oauth2"
+                         )
 
 @app.route('/contact')
 def contact_page():
@@ -180,7 +180,8 @@ def contact_page():
                          quoteAttrib='',
                          subheading1='Google Voice',
                          subtext1='503 468 7021',
-                         appBttnUrl=baseUrl+"google_oauth2")
+                         appBttnUrl=baseUrl+"google_oauth2"
+                         )
 
 
 
