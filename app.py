@@ -58,7 +58,8 @@ def google_oauth2():
                                                 pageToken=page_token).execute()
             calendarsDct = {}
             for calendar_list_entry in calendar_list['items']:
-                calendarsDct[
+                calendarsDct[ # Object creation order seems to be reversed:
+                              # just going with it here...¯\_(ツ)_/¯ (see ln80)
                 calendar_list_entry['id']] = calendar_list_entry['summary']
             page_token = calendar_list.get('nextPageToken')
             if not page_token:
@@ -76,7 +77,7 @@ def google_oauth2():
                                        link="https://myaccount.google.com/permissions",
                                        linktext="https://myaccount.google.com/permissions"
                                        )
-            else:
+            else: # Reverse logical order of dicitonary (see ln63)
                 calendarsSelectedDct = {value:key for key,value in
                           form.Calendars.choices if key in form.Calendars.data}
                 evStart_evEnd = ge.event_range(relRange=form.DateRange.data)
@@ -84,9 +85,16 @@ def google_oauth2():
                                                        calendarsSelectedDct)
                 evStartEvEnd_calEvDfsDct = dfs.add_durations(
                                                         evStartEvEnd_eventsDct)
-                (evStart_evEnd, calEvDFsDct) = evStartEvEnd_calEvDfsDct
-                calDursSmry = dfs.get_cals_durs(calEvDFsDct)
-                test = dfs.summarize_cals_durs(calDursSmry)
+                calWorkTypesDct={}
+                for key,value in calendarsSelectedDct.items():
+                    workTypesDct = dfs.get_work_types(evStartEvEnd_calEvDfsDct,
+                                                      key)
+                    calDursSmry = dfs.get_cals_durs(workTypesDct)
+                    #calDursDF_fmatSumCumCalTotHrs = dfs.summarize_cals_durs(
+                    #                                               calDursSmry)
+                    #(calDursDF, fmatSumCumCalTotHrs) =calDursDF_fmatSumCumCalTotHrs
+
+                    calWorkTypesDct[key] = calDursSmry#(calDursDF, fmatSumCumCalTotHrs)
 
                 return render_template('forms_filled_template.html', form=form,
                                        homeBttnClass="active",
@@ -95,7 +103,7 @@ def google_oauth2():
                                        contactUrl=baseUrl+"contact",
                                        quoteAttrib="Congratulations; you've authorized Timing.Is to access your Google Calendar data! To revoke #authorization visit your Google account @ ",
                                        subheading1='Results',
-                                       subtext1=test,
+                                       subtext1=calWorkTypesDct,
                                        link="https://myaccount.google.com/permissions",
                                        linktext="https://myaccount.google.com/permissions"
                                        )
