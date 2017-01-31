@@ -54,16 +54,14 @@ def google_oauth2():
         page_token = None# https://developers.google.com/google-apps/calendar/v3/reference/calendarList/list#try-it
         while True:
             calendar_list = service.calendarList().list(
-                                        pageToken=page_token).execute()
+                                                pageToken=page_token).execute()
             calendarsDct = {}
             for calendar_list_entry in calendar_list['items']:
                 calendarsDct[
-                calendar_list_entry['id']] = calendar_list_entry[
-                                                                'summary']
+                calendar_list_entry['id']] = calendar_list_entry['summary']
             page_token = calendar_list.get('nextPageToken')
             if not page_token:
                 break
-
         form.Calendars.choices = calendarsDct.items()
 
         if request.method ==  'POST':
@@ -78,11 +76,11 @@ def google_oauth2():
                                        linktext="https://myaccount.google.com/permissions"
                                    )
             else:
-                calendarsNms = form.Calendars.data
-
+                calendarsSelectedDct = {key:value for key,value in form.Calendars.choices if key in form.Calendars.data}
+                # dict(form.Calendars.choices).get(form.Calendars.data)
                 #evStart_evEnd = ge.event_range(relRange=form.DateRange.data)
                 #gtEvents = ge.get_events(
-                #                 service, evStart_evEnd, calendarsSelectedDct)
+                #                  service, evStart_evEnd, calendarsSelectedDct)
 
                 return render_template('forms_filled_template.html', form=form,
                                        homeBttnClass="active",
@@ -91,7 +89,7 @@ def google_oauth2():
                                        contactUrl=baseUrl+"contact",
                                        quoteAttrib="Congratulations; you've authorized Timing.Is to access your Google Calendar data! To revoke #authorization visit your Google account @ ",
                                        subheading1='Results',
-                                       subtext1=calendarsNms,
+                                       subtext1=calendarsSelectedDct,
                                        link="https://myaccount.google.com/permissions",
                                        linktext="https://myaccount.google.com/permissions"
                                    )
