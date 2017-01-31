@@ -90,11 +90,12 @@ def google_oauth2():
                     workTypesDct = dfs.get_work_types(evStartEvEnd_calEvDfsDct,
                                                       key)
                     calDursSmry = dfs.get_cals_durs(workTypesDct)
-                    #calDursDF_fmatSumCumCalTotHrs = dfs.summarize_cals_durs(
-                    #                                               calDursSmry)
-                    #(calDursDF, fmatSumCumCalTotHrs) =calDursDF_fmatSumCumCalTotHrs
+                    calDursDF_fmatSumCumCalTotHrs = dfs.summarize_cals_durs(
+                                                                   calDursSmry)
+                    (calDursDF,
+                     fmatSumCumCalTotHrs) =calDursDF_fmatSumCumCalTotHrs
 
-                    calWorkTypesDct[key] = calDursSmry#(calDursDF, fmatSumCumCalTotHrs)
+                    calWorkTypesDct[key] = (calDursDF, fmatSumCumCalTotHrs)
 
                 return render_template('forms_filled_template.html', form=form,
                                        homeBttnClass="active",
