@@ -10,7 +10,14 @@ class CalendarSelectForm(Form):
    Calendars = SelectMultipleField('Calendar')
 
    DateRange = SelectField('Date Range',
-                          choices = [('day', 'Today'), ('week', 'This Week')])
+                           choices = [('day', 'Today'), ('week', 'This Week'),
+                                      ('month', 'This Month'),
+                                      ('year', 'Year'),
+                                      ('yesterday', 'Yesterday'),
+                                      ('lastWeek', 'Last Week'),
+                                      ('lastMonth', 'Last Month')
+                                     ]
+                          )
    
    StartDate = TextField("Start Date")#,[validators.Required("Please enter a valid date range in iso8601 format")])
 
