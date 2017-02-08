@@ -83,6 +83,7 @@ def google_oauth2():
                 evStart_evEnd = ge.event_range(relRange=form.DateRange.data)
                 evStartEvEnd_eventsDct = ge.get_events(service, evStart_evEnd,
                                                        calendarsSelectedDct)
+                (evStart_evEnd, eventsDct) = evStartEvEnd_eventsDct
                 evStartEvEnd_calEvDfsDct = dfs.add_durations(
                                                         evStartEvEnd_eventsDct)
                 calWorkTypesDct={}
@@ -111,8 +112,7 @@ def google_oauth2():
                                        aboutUrl=baseUrl+"about",
                                        contactUrl=baseUrl+"contact",
                                        quoteAttrib="Congratulations; you've authorized Timing.Is to access your Google Calendar data! To revoke #authorization visit your Google account @ ",
-                                       #subheading1=titles,
-                                       #subtext1=tables,
+                                       subheading1=evStart_evEnd,
                                        link="https://myaccount.google.com/permissions",
                                        linktext="https://myaccount.google.com/permissions"
                                        )

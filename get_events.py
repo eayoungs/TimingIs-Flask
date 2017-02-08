@@ -6,7 +6,10 @@
 # __license__ = "GNU Affero (GPLv3)"
 
 """ This module provides functions for requesting events from a Google
-    Calendar account over a specified time period """
+    Calendar account over a specified time period
+
+    Starting point found @
+https://developers.google.com/google-apps/calendar/quickstart/python """
 
 
 from __future__ import (absolute_import, division,
@@ -14,7 +17,6 @@ from __future__ import (absolute_import, division,
 # from builtins import *
 import os
 import httplib2
-
 from googleapiclient import discovery
 import oauth2client
 from oauth2client.file import Storage
@@ -22,25 +24,27 @@ from oauth2client import client, tools
 
 from datetime import datetime, time, timedelta
 from dateutil import parser
-import calendar
-import csv
-
 import parsedatetime
 import pytz
 from pytz import timezone
+import calendar ##TODO(eayoungs@gmail.com): Remove when event_range() function
+                #                           is revised
 
-# try:
-#     import argparse
-#     flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
-# except ImportError:
-#     flags = None
-
-SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
-CLIENT_SECRET_FILE = 'client_secret.json'
-APPLICATION_NAME = 'LifeEnergy.io'
+import pprint as pp
 
 
-def get_credentials():
+# define Python user-defined exceptions
+class Error(Exception):
+   """Base class for other exceptions"""
+   pass
+
+
+class NonConformantDateTime(Error):
+   """Raised when the datetime object does not conform to expectations """
+   pass
+
+
+def _get_credentials():
     """Gets valid user credentials from storage.
 
     If nothing has been stored, or if the stored credentials are invalid,
@@ -70,11 +74,10 @@ def get_credentials():
     return credentials
 
 
-def create_svs_obj(credentials):
+def _create_svs_obj(credentials):
     """ Creates a Google Calendar API service object and outputs a list of the
         events on the user's calendar for a given period """
 
-    # TODO (eayoungs): Move project from httplib2 to requests!
     http = credentials.authorize(httplib2.Http())
     service = discovery.build('calendar', 'v3', http=http)
 
@@ -87,8 +90,7 @@ def relative_datetime(relPeriod='today', tz='US/Pacific'):
         timezone """
 
     cal = parsedatetime.Calendar()
-    datetimeObj, _ = cal.parseDT(datetimeString=relPeriod, tzinfo=timezone(
-                                  tz))
+    datetimeObj, _ = cal.parseDT(datetimeString=relPeriod, tzinfo=timezone(tz))
 
     return datetimeObj
 
@@ -102,19 +104,75 @@ def midnight_datetime(dtime):
     return midnightDt
 
 
-def event_range(relRange='week', tz='z'):
+def iso_datetime(relRange):
+    """  """
+
+    (evStart, evEnd) = relRange
+    isoPeriodBegin = evStart.isoformat()
+    isoPeriodEnd = evEnd.isoformat()
+    isoEvStart_isoEvEnd = (isoPeriodBegin, isoPeriodEnd)
+
+    return isoEvStart_isoEvEnd
+
+
+def relrange_today():
+    """ Returns a StringType object containing a datetime object in ISO 8601
+        format """
+
+    periodBegin = midnight_datetime(relative_datetime('today'))
+    periodEnd = periodBegin + timedelta(days=1)
+    relToday = (periodBegin, periodEnd)
+
+    return relToday
+
+
+def relrange_thisweek():
+    """  """
+
+    periodBegin = midnight_datetime(relative_datetime('last saturday'))
+    periodEnd = midnight_datetime(relative_datetime('sunday'))
+    relWeek = (periodBegin, periodEnd)
+
+    return relWeek
+
+
+def relrange_thismonth():
+    """  """
+
+    thisDay = midnight_datetime(relative_datetime('today'))
+    first_day_current = datetime(thisDay.year, thisDay.month, 1)
+    periodBegin = thisDay.replace(day = 1)
+    periodEnd = thisDay.replace(day = calendar.monthrange(thisDay.year,
+                                                             thisDay.month)[1])
+    relThisMonth = (periodBegin, periodEnd)
+
+    return relThisMonth
+
+
+def relrange_thisyear():
+    """  """
+
+    thisDay = midnight_datetime(relative_datetime('today'))
+    periodEnd = datetime(thisDay.year, 12, 31)
+    periodBegin = datetime(thisDay.year, 1, 1)
+    relYear = (periodBegin, periodEnd)
+
+    return relYear
+
+
+def event_range(relRange='year', tz='US/Pacific'):
     """ Define the time range for the events to be selected from """
 
     #if begin=='none' and end=='none':
     # http://www.protocolostomy.com/2010/07/06/python-date-manipulation/
     datetimeObj = relative_datetime() # datetime.today()
-    today = datetimeObj.replace(tzinfo=None)
-    endOfToday = midnight_datetime(today) # today.replace(minute=0, hour=0, second=0, microsecond=0)
+    #today = datetimeObj.replace(tzinfo=None)
+    # ParseDateTime: Today
+    pdtToday = midnight_datetime(relative_datetime('today'))
+    endOfToday = midnight_datetime(pdtToday) # today.replace(minute=0, hour=0, second=0, microsecond=0)
     if relRange == 'week':
-        periodBegin = midnight_datetime(relative_datetime(
-                                         'last saturday')).replace(tzinfo=None)
-        periodEnd = midnight_datetime(relative_datetime(
-                                         'saturday')).replace(tzinfo=None)
+        periodBegin = midnight_datetime(relative_datetime('last saturday'))
+        periodEnd = midnight_datetime(relative_datetime('sunday'))
         # relDelta = endOfToday.isoweekday() + 1
         # periodBegin = endOfToday - timedelta(relDelta)
         # periodEnd = endOfToday - timedelta(relDelta-7)
@@ -122,32 +180,29 @@ def event_range(relRange='week', tz='z'):
         relDelta = endOfToday.isoweekday() + 1
         periodBegin = endOfToday - timedelta(relDelta+7)
         periodEnd = endOfToday - timedelta(relDelta)
-    elif relRange == 'day':
-        periodBegin = midnight_datetime(relative_datetime(
-                                         'yesterday')).replace(tzinfo=None)
-        periodEnd = midnight_datetime(relative_datetime(
-                                         'today')).replace(tzinfo=None)
+
+    elif relRange == 'day': 
+        periodBegin = pdtToday
+        periodEnd = pdtToday + timedelta(days=1)
         # periodBegin = datetime.combine(today, time.min)
         # periodEnd = datetime.combine(today, time.max)
     elif relRange == 'yesterday':
-        yesterday = today - timedelta(days=1)
-        periodBegin = datetime.combine(yesterday, time.min)
-        periodEnd = datetime.combine(yesterday, time.max)
+        periodEnd= midnight_datetime(relative_datetime('today'))
+        periodBegin= periodEnd- timedelta(days=1)
+        # yesterday = today - timedelta(days=1)
+        # periodBegin = datetime.combine(yesterday, time.min)
+        # periodEnd = datetime.combine(yesterday, time.max)
     elif relRange == 'month':
-        first_day_current = datetime(today.year, today.month, 1)
-        periodBegin = today.replace(day = 1)
-        periodEnd = today.replace(
-                     day = calendar.monthrange(today.year, today.month)[1])
+        periodBegin = pdtToday.replace(day = 1)
+        periodEnd = pdtToday.replace(
+                day = calendar.monthrange(pdtToday.year, pdtToday.month)[1])
     elif relRange == 'lastMonth':
-        first_day_current = datetime(today.year, today.month, 1)
-        last_day_previous = first_day_current - timedelta(days=1)
-        first_day_previous = datetime(
-                        last_day_previous.year, last_day_previous.month, 1)
-        periodBegin = first_day_previous 
-        periodEnd = last_day_previous
+        periodBegin = pdtToday.replace(month = pdtToday.month - 1, day = 1)
+        periodEnd = pdtToday.replace(
+                   day = calendar.monthrange(pdtToday.year, pdtToday.month)[1])
     elif relRange == 'year':
-        periodBegin = datetime(today.year, 1, 1)
-        periodEnd = datetime(today.year, 12, 31)
+        periodEnd = pdtToday.replace(month = 12, day = 31)
+        periodBegin = pdtToday.replace(month = 1, day = 1)
     else:
         ## TODO: Add exception
         periodBegin = relRange[0]
@@ -156,8 +211,8 @@ def event_range(relRange='week', tz='z'):
     #     periodBegin = parser.parse(begin)
     #     periodEnd = parser.parse(end)
  
-    isoPeriodBegin = periodBegin.isoformat() + tz
-    isoPeriodEnd = periodEnd.isoformat() + tz
+    isoPeriodBegin = periodBegin.isoformat()# + tz
+    isoPeriodEnd = periodEnd.isoformat()# + tz
     evStart_evEnd = (isoPeriodBegin, isoPeriodEnd)
 
     return evStart_evEnd
@@ -187,3 +242,24 @@ def get_events(service, evStart_evEnd, calendars):
     evStartEvEnd_eventsDct = (evStart_evEnd, eventsDct)
 
     return evStartEvEnd_eventsDct
+
+
+if __name__ == '__main__':
+    """  """ 
+
+    SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
+    CLIENT_SECRET_FILE = 'client_secret.json'
+    APPLICATION_NAME = 'LifeEnergy.io'
+
+    credentials = _get_credentials() 
+    service = _create_svs_obj(credentials)
+
+    evStart_evEnd = event_range()
+    calendars = {'Public':'successionecological.com_1hm3pcniuvqhdmb7o6ck2h6los@group.calendar.google.com'}
+                #{'Sunrise and sunset for Portland':
+                 #'i_71.63.230.104#sunrise@group.v.calendar.google.com'}
+    evStartEvEnd_eventsDct = get_events(service, evStart_evEnd, calendars)
+    (evStartEvEnd, eventsDct) = evStartEvEnd_eventsDct
+
+    pp.pprint(eventsDct)
+    pp.pprint(evStart_evEnd)
