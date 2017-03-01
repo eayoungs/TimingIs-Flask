@@ -18,7 +18,7 @@ import dfsort as dfs
 app = create_app()
 app.secret_key = str(uuid.uuid4())
 
-baseUrl = "http://timing.is/"
+baseUrl = "https://timingis.herokuapp.com/"
 
 @app.route('/')
 def main():
