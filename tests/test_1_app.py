@@ -8,3 +8,7 @@ __license__ = "Apache 2.0"
 """ This module provides uint-tests for the main application functions of the webapp; "timing.is" """
 
 
+def test_main():
+	"""  """
+	
+	pass
