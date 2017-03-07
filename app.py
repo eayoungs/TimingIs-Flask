@@ -2,7 +2,7 @@
 
 __author__ = "Eric Allen Youngson"
 __email__ = "eayoungs@gmail.com"
-__copyright__ = "Copyright 2017"
+__copyright__ = "Copyright 2017 Eric Youngson"
 __license__ = "Apache 2.0"
 
 """ This module creates a webisite using the Flask webframework and the Google
