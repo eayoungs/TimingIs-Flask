@@ -2,7 +2,7 @@
 
 __author__ = "Eric Allen Youngson"
 __email__ = "eayoungs@gmail.com"
-__copyright__ = "Copyright 2017"
+__copyright__ = "Copyright 2017 Eric Youngson"
 __license__ = "Apache 2.0"
 
 """ This module creates a webisite using the Flask webframework and the Google
@@ -41,7 +41,7 @@ def main():
                          quoteText='Everything',
                          quoteAttrib='"This Moment is All there Is" --Rumi',
                          subheading1='Build your routine, your way',
-                         subtext1='Find out where your spend your time, setgoals and check in on your progress with minimal effort--all in from withing the calendar you already know & love: Google Calendar',
+                         subtext1='Find out where your spend your time, setgoals and check in on your progress with minimal effort--all in from within the calendar you already know & love: Google Calendar',
                          subheading2="Show the muse you're serious",
                          subtext2='You have to show up for your dreams; no one can do it for you but we can give you the tools to stay present',
                          appBttnUrl=baseUrl+"google_oauth2")
