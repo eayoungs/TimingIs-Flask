@@ -27,6 +27,8 @@ from dateutil import parser
 import parsedatetime
 import pytz
 from pytz import timezone
+from delorean import parse
+from tzlocal import get_localzone
 import calendar ##TODO(eayoungs@gmail.com): Remove when event_range() function
                 #                           is revised
 
@@ -34,12 +36,12 @@ import pprint as pp
 
 
 # define Python user-defined exceptions
-class Error(Exception):
+class BaseException(Exception):
    """Base class for other exceptions"""
    pass
 
 
-class NonConformantDateTime(Error):
+class NonConformantDateTime(BaseException):
    """Raised when the datetime object does not conform to expectations """
    pass
 
@@ -84,10 +86,13 @@ def _create_svs_obj(credentials):
     return service
 
 
-def relative_datetime(relPeriod='today', tz='US/Pacific'):
+def relative_datetime(relPeriod='today', tz=None):
     """ Takes a relative plain-text day and time zone, returns a datetime
         object corresponding to the colloquial date in the specified
         timezone """
+
+    tz = 'America/Los_Angeles' if tz is None else tz
+    ''' tz = get_localzone() if tz is None else tz ## TODO(eayoungs): Not sure why this doesn't work; seems to have to do with the type returned by tzlocal function. Running out of time; next step: Find class memebers to reference text only '''
 
     cal = parsedatetime.Calendar()
     datetimeObj, _ = cal.parseDT(datetimeString=relPeriod, tzinfo=timezone(tz))
@@ -104,63 +109,7 @@ def midnight_datetime(dtime):
     return midnightDt
 
 
-def iso_datetime(relRange):
-    """  """
-
-    (evStart, evEnd) = relRange
-    isoPeriodBegin = evStart.isoformat()
-    isoPeriodEnd = evEnd.isoformat()
-    isoEvStart_isoEvEnd = (isoPeriodBegin, isoPeriodEnd)
-
-    return isoEvStart_isoEvEnd
-
-
-def relrange_today():
-    """ Returns a StringType object containing a datetime object in ISO 8601
-        format """
-
-    periodBegin = midnight_datetime(relative_datetime('today'))
-    periodEnd = periodBegin + timedelta(days=1)
-    relToday = (periodBegin, periodEnd)
-
-    return relToday
-
-
-def relrange_thisweek():
-    """  """
-
-    periodBegin = midnight_datetime(relative_datetime('last saturday'))
-    periodEnd = midnight_datetime(relative_datetime('sunday'))
-    relWeek = (periodBegin, periodEnd)
-
-    return relWeek
-
-
-def relrange_thismonth():
-    """  """
-
-    thisDay = midnight_datetime(relative_datetime('today'))
-    first_day_current = datetime(thisDay.year, thisDay.month, 1)
-    periodBegin = thisDay.replace(day = 1)
-    periodEnd = thisDay.replace(day = calendar.monthrange(thisDay.year,
-                                                             thisDay.month)[1])
-    relThisMonth = (periodBegin, periodEnd)
-
-    return relThisMonth
-
-
-def relrange_thisyear():
-    """  """
-
-    thisDay = midnight_datetime(relative_datetime('today'))
-    periodEnd = datetime(thisDay.year, 12, 31)
-    periodBegin = datetime(thisDay.year, 1, 1)
-    relYear = (periodBegin, periodEnd)
-
-    return relYear
-
-
-def event_range(relRange='year', tz='US/Pacific'):
+def event_range(relRange='Spec', tmz='US/Pacific'):
     """ Define the time range for the events to be selected from """
 
     #if begin=='none' and end=='none':
@@ -168,7 +117,7 @@ def event_range(relRange='year', tz='US/Pacific'):
     datetimeObj = relative_datetime() # datetime.today()
     #today = datetimeObj.replace(tzinfo=None)
     # ParseDateTime: Today
-    pdtToday = midnight_datetime(relative_datetime('today'))
+    pdtToday = midnight_datetime(relative_datetime(relPeriod='today', tz=tmz))
     endOfToday = midnight_datetime(pdtToday) # today.replace(minute=0, hour=0, second=0, microsecond=0)
     if relRange == 'week':
         periodBegin = midnight_datetime(relative_datetime('last saturday'))
@@ -203,10 +152,10 @@ def event_range(relRange='year', tz='US/Pacific'):
     elif relRange == 'year':
         periodEnd = pdtToday.replace(month = 12, day = 31)
         periodBegin = pdtToday.replace(month = 1, day = 1)
-    else:
+    else: ## Add specific date here?
         ## TODO: Add exception
-        periodBegin = relRange[0]
-        periodEnd = relRange[1]
+        periodBegin = pdtToday.replace(year=2016, month=6, day=1)
+        periodEnd = periodBegin.replace(day=30)
     # else:
     #     periodBegin = parser.parse(begin)
     #     periodEnd = parser.parse(end)
@@ -216,6 +165,52 @@ def event_range(relRange='year', tz='US/Pacific'):
     evStart_evEnd = (isoPeriodBegin, isoPeriodEnd)
 
     return evStart_evEnd
+
+
+def event_range2(*specDates, relRange='today', tz=None):
+    """ This function is new version of the event_range() function to allow 
+        two modes; one for relative date-range specification in plain-English,
+        or a specified date range passed directly to the function.
+
+    Args:
+        specDates: Specific dates to be used as period of analysis for 
+                   downstream functions. Provided as a list of strings inside
+                   the tuple of arguments, in "YYYY-mm-dd" format.
+
+        relRange: Plain-English keyword to get relative date-ranges based on
+                  the present day
+
+        tz: The optional parameter to provide an alternate time zone for the
+            period of analysis. If specified, will be passed down to
+            the relative_datetime() function, which defaults to the system
+            timezone from which it is called.
+
+    Returns:
+        evStart_evEnd: A Tuple containing (2) iso8601 date-time objects
+        containing start & end times for a period of analysis. """
+
+    if not specDates:
+        pdtToday = midnight_datetime(relative_datetime(relPeriod='today',
+                                                       tz=tz))
+        endOfToday = midnight_datetime(pdtToday)
+
+        if relRange == 'today':
+            periodBegin = pdtToday
+            periodEnd = pdtToday + timedelta(days=1)
+    else:
+        tz = 'America/Los_Angeles' if tz is None else tz
+        try:
+            periodBegin = parse(str(specDates[0][0])).shift(tz).datetime
+            periodEnd   = parse(str(specDates[0][1])).shift(tz).datetime
+        except BaseException(specDates):
+            pass
+
+    isoPeriodBegin = periodBegin.isoformat()
+    isoPeriodEnd = periodEnd.isoformat()
+    evStart_evEnd = (isoPeriodBegin, isoPeriodEnd)
+
+    return evStart_evEnd
+
 
 def get_events(service, evStart_evEnd, calendars):
     """ Creates a Google Calendar API service object and outputs a list of the
@@ -263,3 +258,5 @@ if __name__ == '__main__':
 
     pp.pprint(eventsDct)
     pp.pprint(evStart_evEnd)
+    (isoPeriodBegin, isoPeriodEnd) = evStart_evEnd
+    pp.pprint(type(isoPeriodBegin))
