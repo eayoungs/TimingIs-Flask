@@ -70,7 +70,7 @@ def google_oauth2():
             calendarsDct = {}
             for calendar_list_entry in calendar_list['items']:
                 calendarsDct[ # Object creation order seems to be reversed:
-                              # just going with it here...¯\_(ツ)_/¯ (see ln80)
+                              # just going with it here...¯\_(ツ)_/¯ (see ln91)
                 calendar_list_entry['id']] = calendar_list_entry['summary']
             page_token = calendar_list.get('nextPageToken')
             if not page_token:
@@ -88,7 +88,7 @@ def google_oauth2():
                                        link="https://myaccount.google.com/permissions",
                                        linktext="https://myaccount.google.com/permissions"
                                        )
-            else: # Reverse logical order of dicitonary (see ln63)
+            else: # Reverse logical order of dicitonary (see ln73)
                 calendarsSelectedDct = {value:key for key,value in
                           form.Calendars.choices if key in form.Calendars.data}
                 evStart_evEnd = ge.event_range(relRange=form.DateRange.data)
