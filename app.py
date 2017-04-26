@@ -29,7 +29,7 @@ import dfsort as dfs
 app = create_app()
 app.secret_key = str(uuid.uuid4())
 
-baseUrl = "http://0.0.0.0:5000/"
+baseUrl = "https://timingis.herokuapp.com/"
 
 @app.route('/')
 def main():
