@@ -26,7 +26,7 @@ import get_events as ge
 import dfsort as dfs
 
 
-app = create_app()
+app = Flask(__name__)#app = create_app()
 app.secret_key = str(uuid.uuid4())
 app.config.from_pyfile('timingis_settings.cfg')
 BASE_URL = app.config['BASE_URL']
