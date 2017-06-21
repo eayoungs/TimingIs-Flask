@@ -31,12 +31,13 @@ class CalendarSelectForm(Form):
                                       ('lastMonth', 'Last Month')
                                      ]
                           )
-   
+   """
    StartDate = TextField("Start Date")#,[validators.Required("Please enter a valid date range in iso8601 format")])
 
    EndDate = TextField("End Date")#,[validators.Required("Please enter a valid date range in iso8601 format")])
    
    Tag = TextField("Tag")#,
                    #[validators.Required("Enter a tag to filter events by")])
-
+   """
+    
    submit = SubmitField("Send")
