@@ -66,6 +66,7 @@
 
   <div class="row marketing">
     <div class="col-md-6">
+      <!--
       {% for message in form.EndDate.errors %}
          <div>{{ message }}</div>
       {% endfor %}
@@ -73,6 +74,7 @@
       {% for message in form.StartDate.errors %}
          <div>{{ message }}</div>
       {% endfor %}
+      -->
       
       <form action="/google_oauth2" method="post">
          <fieldset>
@@ -86,7 +88,7 @@
                {{ form.DateRange.label }}<br>
                {{ form.DateRange }}
                <br>
-               
+               <!--
                {{ form.StartDate.label }}<br>
                {{ form.StartDate }}
                <br>
@@ -98,6 +100,7 @@
                {{ form.Tag.label }}<br>
                {{ form.Tag }}
                <br>
+               -->
 
                <br>{{ form.submit }}
             </div>
