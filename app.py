@@ -22,8 +22,8 @@ import httplib2
 from googleapiclient import discovery
 
 from forms import CalendarSelectForm
-import get_events as ge
-import dfsort as dfs
+from geepal import get_events as ge
+from geepal import dfsort as dfs
 
 
 app = Flask(__name__)#app = create_app()
@@ -106,8 +106,8 @@ def google_oauth2():
                 titles=[]
                 tables=[]
                 for key,value in calendarsSelectedDct.items():
-                    workTypesDct = dfs.get_work_types(evStartEvEnd_calEvDfsDct,
-                                                      key)
+                    workTypesDct = dfs.get_unique_events(
+                                                 evStartEvEnd_calEvDfsDct, key)
                     calDursSmry = dfs.get_cals_durs(workTypesDct)
                     calDursDF_fmatSumCumCalTotHrs = dfs.summarize_cals_durs(
                                                                    calDursSmry)
