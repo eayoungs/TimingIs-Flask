@@ -22,8 +22,10 @@ import httplib2
 from googleapiclient import discovery
 
 from forms import CalendarSelectForm
-from geepal import get_events as ge
-from geepal import dfsort as dfs
+#from geepal
+import get_events as ge
+#from geepal
+import dfsort as dfs
 
 
 app = Flask(__name__)#app = create_app()
@@ -106,16 +108,19 @@ def google_oauth2():
                 titles=[]
                 tables=[]
                 for key,value in calendarsSelectedDct.items():
-                    workTypesDct = dfs.get_unique_events(
-                                                 evStartEvEnd_calEvDfsDct, key)
-                    calDursSmry = dfs.get_cals_durs(workTypesDct)
-                    calDursDF_fmatSumCumCalTotHrs = dfs.summarize_cals_durs(
-                                                                   calDursSmry)
-                    (calDursDF,
-                     fmatSumCumCalTotHrs) =calDursDF_fmatSumCumCalTotHrs
+                    try:
+                        workTypesDct = dfs.get_unique_events(
+                                                     evStartEvEnd_calEvDfsDct, key)
+                        calDursSmry = dfs.get_cals_durs(workTypesDct)
+                        calDursDF_fmatSumCumCalTotHrs = dfs.summarize_cals_durs(
+                                                                       calDursSmry)
+                        (calDursDF,
+                         fmatSumCumCalTotHrs) =calDursDF_fmatSumCumCalTotHrs
 
-                    titles.append(key)
-                    tables.append(calDursDF.to_html())
+                        titles.append(key)
+                        tables.append(calDursDF.to_html())
+                    except Exception as e:
+                        print('No event for that calendar in date range')
 
                     #calWorkTypesDct[key] = (calDursDF.to_html(),
                     #                        fmatSumCumCalTotHrs)
