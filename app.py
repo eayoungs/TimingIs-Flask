@@ -58,6 +58,7 @@ def main():
 def google_oauth2():
     if 'credentials' not in session:
         return redirect(url_for('callback'))
+    # Why is this not indented?
     credentials = OAuth2Credentials.from_json(session['credentials'])
 
     if credentials.access_token_expired:
