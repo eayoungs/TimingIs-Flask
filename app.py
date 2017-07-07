@@ -22,10 +22,8 @@ import httplib2
 from googleapiclient import discovery
 
 from forms import CalendarSelectForm
-#from geepal
-import get_events as ge
-#from geepal
-import dfsort as dfs
+from geepal import get_events as ge
+from geepal import dfsort as dfs
 
 
 app = Flask(__name__)#app = create_app()
