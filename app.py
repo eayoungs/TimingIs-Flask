@@ -85,7 +85,7 @@ def google_oauth2():
 
         if request.method ==  'POST':
             if form.validate() == False:
-                return render_template('forms_template.html', form=form,
+                return render_template('specdate_forms_tmplt.html', form=form,
                                        homeBttnClass="active",
                                        homeUrl=BASE_URL,
                                        aboutUrl=BASE_URL+"about",
@@ -138,7 +138,7 @@ def google_oauth2():
                                        )
 
         elif request.method == 'GET':
-            return render_template('forms_template.html', form=form,
+            return render_template('specdate_forms_tmplt.html', form=form,
                                    homeBttnClass="active",
                                    homeUrl=BASE_URL,
                                    aboutUrl=BASE_URL+"about",
@@ -187,7 +187,7 @@ def callback():
 #         db_session.add(user)
 #         flash('Thanks for registering')
 #         return redirect(url_for('login'))
-#     return render_template('forms_template.html', form=form,
+#     return render_template('specdate_forms_tmplt.html', form=form,
 #                            homeBttnClass="active",
 #                            homeUrl=BASE_URL,
 #                            aboutUrl=BASE_URL+"about",
