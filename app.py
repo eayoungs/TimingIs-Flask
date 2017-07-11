@@ -12,7 +12,7 @@ __license__ = "Apache 2.0"
 
 
 from oauth2client.client import OAuth2WebServerFlow, OAuth2Credentials
-from flask import Flask, render_template, session, url_for, request, redirect
+from flask import Flask, render_template, session, url_for, request, redirect, send_file
 import re
 import uuid
 import json
@@ -50,6 +50,11 @@ def main():
                          subheading2="Show the muse you're serious",
                          subtext2='You have to show up for your dreams; no one can do it for you but we can give you the tools to stay present',
                          appBttnUrl=BASE_URL+"google_oauth2")
+
+
+@app.route('/downloads')
+def return_file():
+    return send_file('/Users/eayoungs/repo/Code/Web/Timing.Is/static/downloads/invoice.pdf')
 
 
 @app.route('/google_oauth2', methods = ['GET', 'POST'])
@@ -124,6 +129,8 @@ def google_oauth2():
                     #calWorkTypesDct[key] = (calDursDF.to_html(),
                     #                        fmatSumCumCalTotHrs)
 
+                return redirect(url_for('return_file'))
+                '''
                 return render_template('forms_filled_template.html', form=form,
                                        titles=titles,
                                        tables=tables,
@@ -136,6 +143,7 @@ def google_oauth2():
                                        link="https://myaccount.google.com/permissions",
                                        linktext="https://myaccount.google.com/permissions"
                                        )
+                '''
 
         elif request.method == 'GET':
             return render_template('forms_template.html', form=form,
