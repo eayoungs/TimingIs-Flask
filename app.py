@@ -84,42 +84,45 @@ def google_oauth2():
         form.Calendars.choices = calendarsDct.items()
 
         if request.method ==  'POST':
+            '''
             if form.validate() == False:
                 return render_template('specdate_forms_tmplt.html', form=form,
                                        homeBttnClass="active",
                                        homeUrl=BASE_URL,
                                        aboutUrl=BASE_URL+"about",
                                        contactUrl=BASE_URL+"contact",
-                                       quoteAttrib="Congratulations; you've authorized Timing.Is to access your Google Calendar data! To revoke #authorization visit your Google account @ ",
+                                       quoteAttrib="Congratulations; you're forms are invalid! ",
                                        link="https://myaccount.google.com/permissions",
                                        linktext="https://myaccount.google.com/permissions"
                                        )
-            else: # Reverse logical order of dicitonary (see ln73)
-                calendarsSelectedDct = {value:key for key,value in
-                          form.Calendars.choices if key in form.Calendars.data}
-                evStart_evEnd = ge.event_range(relRange=form.DateRange.data)
-                evStartEvEnd_eventsDct = ge.get_events(service, evStart_evEnd,
-                                                       calendarsSelectedDct)
-                (evStart_evEnd, eventsDct) = evStartEvEnd_eventsDct
-                evStartEvEnd_calEvDfsDct = dfs.add_durations(
-                                                        evStartEvEnd_eventsDct)
-                calWorkTypesDct={}
-                titles=[]
-                tables=[]
-                for key,value in calendarsSelectedDct.items():
-                    try:
-                        workTypesDct = dfs.get_unique_events(
-                                                     evStartEvEnd_calEvDfsDct, key)
-                        calDursSmry = dfs.get_cals_durs(workTypesDct)
-                        calDursDF_fmatSumCumCalTotHrs = dfs.summarize_cals_durs(
-                                                                       calDursSmry)
-                        (calDursDF,
-                         fmatSumCumCalTotHrs) =calDursDF_fmatSumCumCalTotHrs
+            '''
+            #else: # Reverse logical order of dicitonary (see ln73)
+            calendarsSelectedDct = {value:key for key,value in
+                      form.Calendars.choices if key in form.Calendars.data}
+            evStart_evEnd = ge.event_range(start=form.StartDate.data,
+                                           end=form.EndDate.data)
+            evStartEvEnd_eventsDct = ge.get_events(service, evStart_evEnd,
+                                                   calendarsSelectedDct)
+            (evStart_evEnd, eventsDct) = evStartEvEnd_eventsDct
+            evStartEvEnd_calEvDfsDct = dfs.add_durations(
+                                                    evStartEvEnd_eventsDct)
+            calWorkTypesDct={}
+            titles=[]
+            tables=[]
+            for key,value in calendarsSelectedDct.items():
+                try:
+                    workTypesDct = dfs.get_unique_events(
+                                                 evStartEvEnd_calEvDfsDct, key)
+                    calDursSmry = dfs.get_cals_durs(workTypesDct)
+                    calDursDF_fmatSumCumCalTotHrs = dfs.summarize_cals_durs(
+                                                                   calDursSmry)
+                    (calDursDF,
+                     fmatSumCumCalTotHrs) =calDursDF_fmatSumCumCalTotHrs
 
-                        titles.append(key)
-                        tables.append(calDursDF.to_html())
-                    except Exception as e:
-                        print('No event for that calendar in date range')
+                    titles.append(key)
+                    tables.append(calDursDF.to_html())
+                except Exception as e:
+                    print('No event for that calendar in date range')
 
                     #calWorkTypesDct[key] = (calDursDF.to_html(),
                     #                        fmatSumCumCalTotHrs)
@@ -225,5 +228,5 @@ def contact_page():
 
 
 if __name__ == '__main__':
-  app.debug = False
+  app.debug = True
   app.run(host='0.0.0.0')

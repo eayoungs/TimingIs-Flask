@@ -20,7 +20,6 @@ class CalendarSelectForm(Form):
    """ """
    
    Calendars = SelectMultipleField('Calendar')
-
    DateRange = SelectField('Date Range',
                            choices = [('day', 'Today'), ('week', 'This Week'),
                                       ('month', 'This Month'),
@@ -30,11 +29,7 @@ class CalendarSelectForm(Form):
                                       #('lastMonth', 'Last Month')
                                      ]
                           )
-   StartDate = TextField("Start Date")#,[validators.Required("Please enter a valid date range in iso8601 format")])
-
-   EndDate = TextField("End Date")#,[validators.Required("Please enter a valid date range in iso8601 format")])
-   
-   Tag = TextField("Tag")#,
-                   #[validators.Required("Enter a tag to filter events by")])
-    
+   StartDate = TextField("Start Date", [validators.Length(min=10, max=10)])
+   EndDate = TextField("End Date", [validators.Length(min=10, max=10)])
+   Tag = TextField("Tag", [validators.Length(min=1, max=30)])    
    submit = SubmitField("Send")
