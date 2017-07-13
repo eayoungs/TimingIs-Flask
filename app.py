@@ -116,7 +116,7 @@ def google_oauth2():
                     try:
                         eventTypesDct = dfs.get_unique_events(
                                                      evStartEvEnd_calEvDfsDct, key)
-                        invoiceItemsDct = dfs.invoice_dict(eventTypesDct, 'GeePal')#form.Tag)
+                        invoiceItemsDct = dfs.invoice_dict(eventTypesDct, form.Tag.data)
                         invoice.main(invoiceItemsDct)
 
                         #calDursSmry = dfs.get_cals_durs(workTypesDct)
