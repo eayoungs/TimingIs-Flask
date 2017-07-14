@@ -55,7 +55,7 @@ def main():
 
 @app.route('/downloads')
 def return_file():
-    return send_file('/Users/eayoungs/repo/Code/Web/Timing.Is/invoice.pdf')
+    return send_file('./invoice.pdf')
 
 
 @app.route('/google_oauth2', methods = ['GET', 'POST'])
