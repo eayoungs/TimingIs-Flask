@@ -12,7 +12,7 @@ __license__ = "Apache 2.0"
 
 
 from oauth2client.client import OAuth2WebServerFlow, OAuth2Credentials
-from flask import Flask, render_template, session, url_for, request, redirect
+from flask import Flask, render_template, session, url_for, request, redirect, send_file
 import re
 import uuid
 import json
@@ -24,6 +24,7 @@ from googleapiclient import discovery
 from forms import CalendarSelectForm
 from geepal import get_events as ge
 from geepal import dfsort as dfs
+import invoice
 
 
 app = Flask(__name__)#app = create_app()
@@ -50,6 +51,11 @@ def main():
                          subheading2="Show the muse you're serious",
                          subtext2='You have to show up for your dreams; no one can do it for you but we can give you the tools to stay present',
                          appBttnUrl=BASE_URL+"google_oauth2")
+
+
+@app.route('/downloads')
+def return_file():
+    return send_file('./invoice.pdf')
 
 
 @app.route('/google_oauth2', methods = ['GET', 'POST'])
@@ -103,39 +109,42 @@ def google_oauth2():
                 (evStart_evEnd, eventsDct) = evStartEvEnd_eventsDct
                 evStartEvEnd_calEvDfsDct = dfs.add_durations(
                                                         evStartEvEnd_eventsDct)
-                calWorkTypesDct={}
-                titles=[]
-                tables=[]
+                #calWorkTypesDct={}
+                #titles=[]
+                #tables=[]
                 for key,value in calendarsSelectedDct.items():
                     try:
-                        workTypesDct = dfs.get_unique_events(
+                        eventTypesDct = dfs.get_unique_events(
                                                      evStartEvEnd_calEvDfsDct, key)
-                        calDursSmry = dfs.get_cals_durs(workTypesDct)
-                        calDursDF_fmatSumCumCalTotHrs = dfs.summarize_cals_durs(
-                                                                       calDursSmry)
-                        (calDursDF,
-                         fmatSumCumCalTotHrs) =calDursDF_fmatSumCumCalTotHrs
+                        invoiceItemsDct = dfs.invoice_dict(eventTypesDct, form.Tag.data)
+                        invoice.main(invoiceItemsDct)
 
-                        titles.append(key)
-                        tables.append(calDursDF.to_html())
+                        #calDursSmry = dfs.get_cals_durs(workTypesDct)
+                        #calDursDF_fmatSumCumCalTotHrs = dfs.summarize_cals_durs(
+                        #                                               calDursSmry)
+                        #(calDursDF,
+                        # fmatSumCumCalTotHrs) =calDursDF_fmatSumCumCalTotHrs
+                        #
+                        #titles.append(key)
+                        #tables.append(calDursDF.to_html())
                     except Exception as e:
-                        print('No event for that calendar in date range')
+                        print(e)
 
                     #calWorkTypesDct[key] = (calDursDF.to_html(),
                     #                        fmatSumCumCalTotHrs)
-
-                return render_template('forms_filled_template.html', form=form,
-                                       titles=titles,
-                                       tables=tables,
-                                       homeBttnClass="active",
-                                       homeUrl=BASE_URL,
-                                       aboutUrl=BASE_URL+"about",
-                                       contactUrl=BASE_URL+"contact",
-                                       quoteAttrib="Congratulations; you've authorized Timing.Is to access your Google Calendar data! To revoke #authorization visit your Google account @ ",
-                                       subheading1=evStart_evEnd,
-                                       link="https://myaccount.google.com/permissions",
-                                       linktext="https://myaccount.google.com/permissions"
-                                       )
+                return redirect(url_for('return_file'))
+                #return render_template('forms_filled_template.html', form=form,
+                #                       #titles=titles,
+                #                       #tables=tables,
+                #                       homeBttnClass="active",
+                #                       homeUrl=BASE_URL,
+                #                       aboutUrl=BASE_URL+"about",
+                #                       contactUrl=BASE_URL+"contact",
+                #                       quoteAttrib="Congratulations; you've authorized Timing.Is to access your Google Calendar data! To revoke #authorization visit your Google account @ ",
+                #                       subheading1=evStart_evEnd,
+                #                       link="https://myaccount.google.com/permissions",
+                #                       linktext="https://myaccount.google.com/permissions"
+                #                       )
 
         elif request.method == 'GET':
             return render_template('forms_template.html', form=form,
