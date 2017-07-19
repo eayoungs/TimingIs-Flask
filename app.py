@@ -213,7 +213,21 @@ def about_page():
                          quoteText='About',
                          quoteAttrib='',
                          subheading1='Read-only parsing of your calendar data',
-                         subtext1="Timing.Is will not store your data. It will produce summary charts describing the amount and percent of of total for all unique events, by calendar or time spent in various categories determined by a 'tag'of your choosing, which can be any word or phrase that you want to use. Activity domains, such as physical, social, spiritual or mental; categorical markers, like professional, personal or communal.",
+                         subtext1= '''Timing.is will not store your data. It will
+                                      produce summary charts describing the amount
+                                      and percent of of total for all unique events
+                                      by calendar or time spent in various
+                                      categories determined by a \'tag\'of your
+                                      choosing, which can be any word or phrase
+                                      that you want to use. Activity domains, such
+                                      as physical, social, spiritual or mental;
+                                      categorical markers, like professional,
+                                      personal or communal.''',
+                         subheading2= '''Source Code Available on Github''',
+                         subtext2= '''https://github.com/eayoungs/Timing.is\n
+                                      The underlying functionality is provided by
+                                      by the GeePal library:\n
+                                      https://pypi.python.org/pypi/geepal''',
                          appBttnUrl=BASE_URL+"google_oauth2"
                          )
 
