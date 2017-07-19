@@ -39,18 +39,24 @@ REDIRECT_URI = app.config['REDIRECT_URI']
 
 @app.route('/')
 def main():
-  return render_template('template.html',
-                         homeBttnClass="active",
-                         homeUrl=BASE_URL,
-                         aboutUrl=BASE_URL+"about",
-                         contactUrl=BASE_URL+"contact",
-                         quoteText='Everything',
-                         quoteAttrib='"This Moment is All there Is" --Rumi',
-                         subheading1='Build your routine, your way',
-                         subtext1='Find out where your spend your time, setgoals and check in on your progress with minimal effort--all in from within the calendar you already know & love: Google Calendar',
-                         subheading2="Show the muse you're serious",
-                         subtext2='You have to show up for your dreams; no one can do it for you but we can give you the tools to stay present',
-                         appBttnUrl=BASE_URL+"google_oauth2")
+    return render_template('template.html',
+                           homeBttnClass="active",
+                           homeUrl=BASE_URL,
+                           aboutUrl=BASE_URL+"about",
+                           contactUrl=BASE_URL+"contact",
+                           quoteText='Everything',
+                           quoteAttrib='"This Moment is All there Is" --Rumi',
+                           subheading1='Build your routine, your way',
+                           subtext1= '''Find out where your spend your time, 
+                                        setgoals and check in on your progress 
+                                        with minimal effort--all in from within 
+                                        the calendar you already know & love: 
+                                        Google Calendar''',
+                           subheading2="Show the muse you're serious",
+                           subtext2= '''You have to show up for your dreams; no 
+                                        one can do it for you but we can give 
+                                        you the tools to stay present''',
+                           appBttnUrl=BASE_URL+"google_oauth2")
 
 
 @app.route('/downloads')
@@ -106,6 +112,7 @@ def google_oauth2():
                 evStart_evEnd = ge.event_range(relRange=form.DateRange.data)
                 evStartEvEnd_eventsDct = ge.get_events(service, evStart_evEnd,
                                                        calendarsSelectedDct)
+                #TODO (eayoungs@gmail.com): Test for empty dict (no events)
                 (evStart_evEnd, eventsDct) = evStartEvEnd_eventsDct
                 evStartEvEnd_calEvDfsDct = dfs.add_durations(
                                                         evStartEvEnd_eventsDct)
