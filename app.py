@@ -39,6 +39,7 @@ REDIRECT_URI = app.config['REDIRECT_URI']
 
 @app.route('/')
 def main():
+    os.system('rm ./invoice.pdf')
     return render_template('template.html',
                            homeBttnClass="active",
                            homeUrl=BASE_URL,
