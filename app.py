@@ -39,18 +39,25 @@ REDIRECT_URI = app.config['REDIRECT_URI']
 
 @app.route('/')
 def main():
-  return render_template('template.html',
-                         homeBttnClass="active",
-                         homeUrl=BASE_URL,
-                         aboutUrl=BASE_URL+"about",
-                         contactUrl=BASE_URL+"contact",
-                         quoteText='Everything',
-                         quoteAttrib='"This Moment is All there Is" --Rumi',
-                         subheading1='Build your routine, your way',
-                         subtext1='Find out where your spend your time, setgoals and check in on your progress with minimal effort--all in from within the calendar you already know & love: Google Calendar',
-                         subheading2="Show the muse you're serious",
-                         subtext2='You have to show up for your dreams; no one can do it for you but we can give you the tools to stay present',
-                         appBttnUrl=BASE_URL+"google_oauth2")
+    os.system('rm ./invoice.pdf')
+    return render_template('template.html',
+                           homeBttnClass="active",
+                           homeUrl=BASE_URL,
+                           aboutUrl=BASE_URL+"about",
+                           contactUrl=BASE_URL+"contact",
+                           quoteText='Everything',
+                           quoteAttrib='"This Moment is All there Is" --Rumi',
+                           subheading1='Build your routine, your way',
+                           subtext1= '''Find out where your spend your time, 
+                                        setgoals and check in on your progress 
+                                        with minimal effort--all in from within 
+                                        the calendar you already know & love: 
+                                        Google Calendar''',
+                           subheading2="Show the muse you're serious",
+                           subtext2= '''You have to show up for your dreams; no 
+                                        one can do it for you but we can give 
+                                        you the tools to stay present''',
+                           appBttnUrl=BASE_URL+"google_oauth2")
 
 
 @app.route('/downloads')
@@ -106,6 +113,7 @@ def google_oauth2():
                 evStart_evEnd = ge.event_range(relRange=form.DateRange.data)
                 evStartEvEnd_eventsDct = ge.get_events(service, evStart_evEnd,
                                                        calendarsSelectedDct)
+                #TODO (eayoungs@gmail.com): Test for empty dict (no events)
                 (evStart_evEnd, eventsDct) = evStartEvEnd_eventsDct
                 evStartEvEnd_calEvDfsDct = dfs.add_durations(
                                                         evStartEvEnd_eventsDct)
@@ -213,7 +221,21 @@ def about_page():
                          quoteText='About',
                          quoteAttrib='',
                          subheading1='Read-only parsing of your calendar data',
-                         subtext1="Timing.Is will not store your data. It will produce summary charts describing the amount and percent of of total for all unique events, by calendar or time spent in various categories determined by a 'tag'of your choosing, which can be any word or phrase that you want to use. Activity domains, such as physical, social, spiritual or mental; categorical markers, like professional, personal or communal.",
+                         subtext1= '''Timing.is will not store your data. It will
+                                      produce summary charts describing the amount
+                                      and percent of of total for all unique events
+                                      by calendar or time spent in various
+                                      categories determined by a \'tag\'of your
+                                      choosing, which can be any word or phrase
+                                      that you want to use. Activity domains, such
+                                      as physical, social, spiritual or mental;
+                                      categorical markers, like professional,
+                                      personal or communal.''',
+                         subheading2= '''Source Code Available on Github''',
+                         subtext2= '''https://github.com/eayoungs/Timing.is\n
+                                      The underlying functionality is provided by
+                                      by the GeePal library:\n
+                                      https://pypi.python.org/pypi/geepal''',
                          appBttnUrl=BASE_URL+"google_oauth2"
                          )
 
