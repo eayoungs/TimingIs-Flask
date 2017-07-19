@@ -12,7 +12,8 @@ __license__ = "Apache 2.0"
 
 
 from oauth2client.client import OAuth2WebServerFlow, OAuth2Credentials
-from flask import Flask, render_template, session, url_for, request, redirect, send_file
+from flask import (Flask, render_template, session, url_for, request, redirect,
+                  send_file)
 import re
 import uuid
 import json

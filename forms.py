@@ -12,7 +12,8 @@ __license__ = "Apache 2.0"
 
 
 from flask_wtf import Form
-from wtforms import TextField, IntegerField, TextAreaField, SubmitField, SelectField, SelectMultipleField
+from wtforms import (TextField, IntegerField, TextAreaField, SubmitField,
+                     SelectField, SelectMultipleField)
 from wtforms import validators, ValidationError
 
 
