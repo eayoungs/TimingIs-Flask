@@ -120,12 +120,15 @@ def google_oauth2():
                 #calWorkTypesDct={}
                 #titles=[]
                 #tables=[]
-                for key,value in calendarsSelectedDct.items():
+                for key, value in calendarsSelectedDct.items():
                     try:
                         eventTypesDct = dfs.get_unique_events(
-                                                     evStartEvEnd_calEvDfsDct, key)
-                        invoiceItemsDct = dfs.invoice_dict(eventTypesDct, form.Tag.data)
-                        invoice.main(invoiceItemsDct)
+                                                      evStartEvEnd_calEvDfsDct,
+                                                      key)
+                        invoiceItemsDct = dfs.invoice_dict(eventTypesDct,
+                                                           form.Tag.data)
+                        invoice.main(invoiceItemsDct,
+                                     provider_email=form.provider_email.data)#, key)
 
                         #calDursSmry = dfs.get_cals_durs(workTypesDct)
                         #calDursDF_fmatSumCumCalTotHrs = dfs.summarize_cals_durs(
