@@ -31,7 +31,8 @@ class CalendarSelectForm(Form):
                                       ]
                            ) 
     Tag = TextField('Tag', [validators.DataRequired()])
-    provider_email  = TextField('Provider Email')
+    billing_rate = TextField('Billing Rate')
+    provider_email = TextField('Provider Email')
     provider_name = TextField('Provider Name')
     provider_street = TextField('Provider Street')
     provider_city = TextField('Provider City')
