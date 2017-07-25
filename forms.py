@@ -18,24 +18,29 @@ from wtforms import validators, ValidationError
 
 
 class CalendarSelectForm(Form):
-   """ """
+    """  """
    
-   Calendars = SelectMultipleField('Calendar')
-
-   DateRange = SelectField('Date Range',
-                           choices = [('day', 'Today'), ('week', 'This Week'),
-                                      ('month', 'This Month'),
-                                      ('year', 'Year')#,
-                                      #('yesterday', 'Yesterday'),
-                                      #('lastWeek', 'Last Week'),
-                                      #('lastMonth', 'Last Month')
-                                     ]
-                          )
-   StartDate = TextField("Start Date")#,[validators.Required("Please enter a valid date range in iso8601 format")])
-
-   EndDate = TextField("End Date")#,[validators.Required("Please enter a valid date range in iso8601 format")])
-   
-   Tag = TextField("Tag")#,
-                   #[validators.Required("Enter a tag to filter events by")])
+    Calendars = SelectMultipleField('Calendar')
+    DateRange = SelectField('Date Range',
+                            choices = [('day', 'Today'), ('week', 'This Week'),
+                                       ('month', 'This Month'),
+                                       ('year', 'Year')#,
+                                       #('yesterday', 'Yesterday'),
+                                       #('lastWeek', 'Last Week'),
+                                       #('lastMonth', 'Last Month')
+                                      ]
+                           ) 
+    Tag = TextField('Tag', [validators.DataRequired()])
+    billing_rate = TextField('Billing Rate')
+    provider_email = TextField('Provider Email')
+    provider_name = TextField('Provider Name')
+    provider_street = TextField('Provider Street')
+    provider_city = TextField('Provider City')
+    provider_state = TextField('Provier State')
+    provider_country = TextField('Provider Country')
+    provider_post_code = TextField('Provider Postal Code')
+    provider_tax_number = TextField('Provider Tax Number')
+    StartDate = TextField("Start Date")
+    EndDate = TextField("End Date")
     
-   submit = SubmitField("Send")
+    submit = SubmitField("Send")

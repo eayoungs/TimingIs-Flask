@@ -1,19 +1,15 @@
-<!-- https://realpython.com/blog/python/getting-started-with-bootstrap-3/
-     https://realpython.com/blog/python/primer-on-jinja-templating/ -->
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title>Timing is...</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="../../assets/js/html5shiv.js"></script>
-      <script src="../../assets/js/respond.min.js"></script>
-    <![endif]-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   </head>
+    <!-- https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout 
+    https://gridbyexample.com/ -->
   <style>
     body {
       padding-top: 20px;
@@ -22,7 +18,7 @@
     .container-narrow {
       margin: 0 auto;
       max-width: 700px;
-    }
+    } 
 
     .container-narrow > hr {
       margin: 40px 0 0 0;
@@ -48,72 +44,111 @@
     .marketing p + h4 {
       margin-top: 28px;
     }
+    .wrapper {
+      display: grid;
+      grid-auto-columns: auto;
+      grid-auto-rows: auto;
+      grid-gap: 150px;
+    }
+    .one {
+      grid-column: 1 / 3;
+      grid-row: 1;
+    }
+    .two { 
+      grid-column: 2 / 4;
+      grid-row: 1 / 3;
+    }
+    .three { 
+      grid-column: 3 / 4;
+      grid-row: 1 / 4;
+    }
   </style>
   <body>
-
-  <div class="container-narrow">
-  <ul class="nav nav-pills pull-right">
-    <li class={{homeBttnClass}}><a href={{homeUrl}}>Home</a></li>
-    <li class={{aboutBttnClass}}><a href={{aboutUrl}}>About</a></li>
-    <li class={{contactBttnClass}}><a href={{contactUrl}}>Contact</a></li>
-  </ul>
-  <h3 class="text-muted">Timing is...</h3>
-  <hr>
+    <div class="container-narrow">
+    <ul class="nav nav-pills pull-right">
+      <li class={{homeBttnClass}}><a href={{homeUrl}}>Home</a></li>
+      <li class={{aboutBttnClass}}><a href={{aboutUrl}}>About</a></li>
+      <li class={{contactBttnClass}}><a href={{contactUrl}}>Contact</a></li>
+    </ul>
+    <h3 class="text-muted">Timing is...</h3>
+    <hr>
   <div class="jumbotron">
     <h1>{{quoteText}}</h1>
     <p class="lead">{{quoteAttrib}}<a href={{link}}>{{linktext}}</a></p>
   </div>
 
-  <div class="row marketing">
-    <div class="col-md-6">
-      <!--
-      {% for message in form.EndDate.errors %}
-         <div>{{ message }}</div>
-      {% endfor %}
-      
-      {% for message in form.StartDate.errors %}
-         <div>{{ message }}</div>
-      {% endfor %}
-      -->
-      
-      <form action="/google_oauth2" method="post">
-         <fieldset>
-            <legend>Options</legend>
-            {{ form.hidden_tag() }}
-            
-            <div style = font-size:20px; font-weight:bold; margin-left:150px;>               
-               {{ form.Calendars.label }} {{ form.Calendars }}
-               <br>
-               
-               {{ form.DateRange.label }}<br>
-               {{ form.DateRange }}
-               <br>
-               <!--
-               {{ form.StartDate.label }}<br>
-               {{ form.StartDate }}
-               <br>
+    <form action="/google_oauth2" method="post">
+     <fieldset>
+        <legend>Options</legend>
+        {{ form.hidden_tag() }}
+        
+        <div style = font-size:20px; font-weight:bold; margin-left:150px; class="wrapper">
+           <div class = "one">
+             
+             {{ form.billing_rate.label }}<br>
+             {{ form.billing_rate }}
+             <br>
 
-               {{ form.EndDate.label }}<br>
-               {{ form.EndDate }}
-               <br>
-               -->
-               {{ form.Tag.label }}<br>
-               {{ form.Tag }}
-               <br>
-               
-               <br>{{ form.submit }}
-            </div>
-            
-         </fieldset>
-      </form>
-<!--
-    <div class="col-md-6">
-      <h4>{{ subheading1 }}</h4> 
-    </div>
--->    
-    </div>
+             {{ form.provider_email.label }}<br>
+             {{ form.provider_email }}
+             <br>
 
-  <script src="{{ url_for('static', filename='js/jquery-3.1.1.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-  </body> 
+             {{ form.provider_name.label }}<br>
+             {{ form.provider_name }}
+             <br>
+
+             {{ form.provider_street.label }}<br>
+             {{ form.provider_street }}
+             <br>
+
+             {{ form.provider_city.label }}<br>
+             {{ form.provider_city }}
+             <br>
+
+             {{ form.provider_state.label }}<br>
+             {{ form.provider_state }}
+             <br>
+
+             {{ form.provider_country.label }}<br>
+             {{ form.provider_country }}
+             <br>
+
+             {{ form.provider_post_code.label }}<br>
+             {{ form.provider_post_code }}
+             <br>
+ 
+           </div>
+
+           <div class="two">
+             {{ form.Calendars.label }}<br>
+             {{ form.Calendars }}
+             <br>
+             
+             {{ form.DateRange.label }}<br>
+             {{ form.DateRange }}
+             <br>
+             <!--
+             {{ form.StartDate.label }}<br>
+             {{ form.StartDate }}
+             <br>
+
+             {{ form.EndDate.label }}<br>
+             {{ form.EndDate }}
+             <br>
+             -->
+
+             {{ form.Tag.label }}<br>
+             {{ form.Tag }}
+             <br>
+
+             <br>{{ form.submit }}
+
+           </div>
+
+          </div>
+        </div>
+     </fieldset>
+    </form>
+
+  </body>
 </html>
