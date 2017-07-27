@@ -1,0 +1,6 @@
+# buffer files
+*~
+\#*
+
+# python __pycache__ directory
+__pycache__
