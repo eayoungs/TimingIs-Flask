@@ -7,6 +7,9 @@
 *Temp*
 *scratch*
 
+# Config files
+*.cfg
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
