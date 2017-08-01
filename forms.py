@@ -6,8 +6,8 @@
     same author, to provide summary statistics about your events. """
 
 from flask_wtf import Form
-from wtforms import TextField, IntegerField, TextAreaField, SubmitField
-from wtforms import SelectField, SelectMultipleField
+from wtforms import (TextField, IntegerField, TextAreaField, SubmitField
+                     SelectField, SelectMultipleField)
 from wtforms import validators, ValidationError
 
 """ Module level dunder names """
