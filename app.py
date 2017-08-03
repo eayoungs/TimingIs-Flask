@@ -131,8 +131,17 @@ def google_oauth2():
                         if form.billing_rate.data:
                             billing_rate = form.billing_rate.data
                         else:
-                            billing_rate = '150'
-                        invoice.main(invoiceItemsDct, billing_rate=billing_rate)
+                            billing_rate = '1'
+                        invoice.main(invoiceItemsDct,
+                                     billing_rate=billing_rate,
+                                     provider_email=form.provider_email.data,
+                                     provider_name=form.provider_name.data,
+                                     provider_street=form.provider_street.data,
+                                     provider_city=form.provider_city.data,
+                                     provider_state=form.provider_state.data,
+                                     provider_country=form.provider_country.data,
+                                     provider_post_code=form.provider_post_code.data
+                                     )
 
                         #calDursSmry = dfs.get_cals_durs(workTypesDct)
                         #calDursDF_fmatSumCumCalTotHrs = dfs.summarize_cals_durs(

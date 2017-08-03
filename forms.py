@@ -36,7 +36,7 @@ class CalendarSelectForm(Form):
     provider_name = TextField('Provider Name')
     provider_street = TextField('Provider Street')
     provider_city = TextField('Provider City')
-    provider_state = TextField('Provier State')
+    provider_state = TextField('Provider State')
     provider_country = TextField('Provider Country')
     provider_post_code = TextField('Provider Postal Code')
     provider_tax_number = TextField('Provider Tax Number')
