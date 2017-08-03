@@ -140,7 +140,9 @@ def google_oauth2():
                                      provider_city=form.provider_city.data,
                                      provider_state=form.provider_state.data,
                                      provider_country=form.provider_country.data,
-                                     provider_post_code=form.provider_post_code.data
+                                     provider_post_code=form.provider_post_code.data,
+                                     provider_tax_rate=form.provider_tax_rate.data,
+                                     invoice_id=form.invoice_id.data
                                      )
 
                         #calDursSmry = dfs.get_cals_durs(workTypesDct)

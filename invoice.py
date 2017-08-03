@@ -1,4 +1,4 @@
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 import pandas as pd
 from pyinvoice.models import InvoiceInfo, ServiceProviderInfo, ClientInfo, \
                              Item, Transaction
@@ -32,7 +32,8 @@ provider_city='Big City'
 provider_state='Blue State'
 provider_country='USA'
 provider_post_code='55555'
-provider_tax_number='Vat/Tax number'
+provider_tax_rate=20
+invoice_id=1023
 
 def main(invoiceItemsDct=invoiceItemsDct, calendar=calendar, eventType=eventType, project=project, 
          client_email=client_email,
@@ -49,7 +50,8 @@ def main(invoiceItemsDct=invoiceItemsDct, calendar=calendar, eventType=eventType
          provider_state=provider_state,
          provider_country=provider_country,
          provider_post_code=provider_post_code,
-         provider_tax_number=provider_tax_number,
+         provider_tax_rate=provider_tax_rate,
+         invoice_id=invoice_id,
          billing_rate=billing_rate,
          paid_status=False):
     """  """
@@ -59,7 +61,8 @@ def main(invoiceItemsDct=invoiceItemsDct, calendar=calendar, eventType=eventType
     # Paid stamp, optional
     doc.is_paid = paid_status
 
-    doc.invoice_info = InvoiceInfo(1023, datetime.now(), datetime.now())  #     Invoice info, optional
+    doc.invoice_info = InvoiceInfo(invoice_id, datetime.now(), datetime.now() +
+                                   timedelta(days=30))
 
     # Service Provider Info, optional
     doc.service_provider_info = ServiceProviderInfo(
@@ -89,11 +92,11 @@ def main(invoiceItemsDct=invoiceItemsDct, calendar=calendar, eventType=eventType
             doc.add_item(Item(key1, value2['description'], value2['duration'], billing_rate))
 
     # Tax rate, optional
-    doc.set_item_tax_rate(20)  # 20%
+    doc.set_item_tax_rate(provider_tax_rate)  # 20%
 
     # Transactions detail, optional
-    doc.add_transaction(Transaction('Paypal', 111, datetime.now(), 1))
-    doc.add_transaction(Transaction('Stripe', 222, date.today(), 2))
+    '''doc.add_transaction(Transaction('Paypal', 111, datetime.now(), 1))
+    doc.add_transaction(Transaction('Stripe', 222, date.today(), 2))'''
 
     # Optional  
     doc.set_bottom_tip("Email: " + provider_email + "<br />Don't hesitate to contact   us for any questions.")

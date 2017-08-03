@@ -85,6 +85,10 @@
         <div style = font-size:20px; font-weight:bold; margin-left:150px; class="wrapper">
            <div class = "one">
              
+             {{ form.invoice_id.label }}<br>
+             {{ form.invoice_id }}
+             <br>
+
              {{ form.billing_rate.label }}<br>
              {{ form.billing_rate }}
              <br>
@@ -115,6 +119,10 @@
 
              {{ form.provider_post_code.label }}<br>
              {{ form.provider_post_code }}
+             <br>
+
+             {{ form.provider_tax_rate.label}}<br>
+             {{ form.provider_tax_rate }}
              <br>
  
            </div>

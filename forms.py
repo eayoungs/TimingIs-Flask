@@ -39,7 +39,8 @@ class CalendarSelectForm(Form):
     provider_state = TextField('Provider State')
     provider_country = TextField('Provider Country')
     provider_post_code = TextField('Provider Postal Code')
-    provider_tax_number = TextField('Provider Tax Number')
+    provider_tax_rate = TextField('Provider Tax Rate')
+    invoice_id = TextField('Invoice Number')
     StartDate = TextField("Start Date")
     EndDate = TextField("End Date")
     
