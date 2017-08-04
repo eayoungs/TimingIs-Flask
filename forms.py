@@ -59,5 +59,6 @@ class CalendarSelectForm(Form):
     provider_post_code = TextField('Provider Postal Code')
     provider_tax_rate = TextField('Provider Tax Rate')
     invoice_id = TextField('Invoice Number')
+    invoice_due_date=TextField('Invoice Due Date')
 
     submit = SubmitField("Send")

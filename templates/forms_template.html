@@ -89,6 +89,10 @@
              {{ form.billing_rate }}
              <br>
 
+             {{ form.provider_tax_rate.label }}<br>
+             {{ form.provider_tax_rate }}
+             <br>
+
              {{ form.provider_email.label }}<br>
              {{ form.provider_email }}
              <br>
@@ -116,6 +120,14 @@
              {{ form.provider_post_code.label }}<br>
              {{ form.provider_post_code }}
              <br>
+
+             {{ form.invoice_due_date.label }}<br>
+             {{ form.invoice_due_date }}
+             <br>
+             
+             {{ form.invoice_id.label }}<br>
+             {{ form.invoice_id }}
+             <br>
  
            </div>
 
@@ -127,16 +139,7 @@
              {{ form.DateRange.label }}<br>
              {{ form.DateRange }}
              <br>
-             <!--
-             {{ form.StartDate.label }}<br>
-             {{ form.StartDate }}
-             <br>
-
-             {{ form.EndDate.label }}<br>
-             {{ form.EndDate }}
-             <br>
-             -->
-
+             
              {{ form.Tag.label }}<br>
              {{ form.Tag }}
              <br>
