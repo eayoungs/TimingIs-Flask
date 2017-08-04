@@ -1,36 +1,54 @@
 #!/usr/bin/env python
 
-__author__ = "Eric Allen Youngson"
-__email__ = "eayoungs@gmail.com"
-__copyright__ = "Copyright 2017 Eric Youngson"
-__license__ = "Apache 2.0"
-
 """ This module creates a webisite using the Flask webframework and the Google
     API implementation of the OAuth 2.0 authentication protocol to allow the
     app to parse your Google Calendars. It also uses a library, written by the
     same author, to provide summary statistics about your events. """
 
-
 from flask_wtf import Form
 from wtforms import (TextField, IntegerField, TextAreaField, SubmitField,
-                     SelectField, SelectMultipleField)
-from wtforms import validators, ValidationError
+                     SelectField, SelectMultipleField, validators,
+                     ValidationError)
+
+""" Module level dunder names """
+
+__author__ = "Eric Allen Youngson"
+__email__ = "eayoungs@gmail.com"
+__copyright__ = "Copyright 2017 Eric Youngson"
+__license__ = "Apache 2.0"
 
 
 class CalendarSelectForm(Form):
-    """  """
-   
+    """ """
+
     Calendars = SelectMultipleField('Calendar')
+
     DateRange = SelectField('Date Range',
-                            choices = [('day', 'Today'), ('week', 'This Week'),
-                                       ('month', 'This Month'),
-                                       ('year', 'Year')#,
-                                       #('yesterday', 'Yesterday'),
-                                       #('lastWeek', 'Last Week'),
-                                       #('lastMonth', 'Last Month')
-                                      ]
-                           ) 
-    Tag = TextField('Tag', [validators.DataRequired()])
+                            choices=[('day', 'Today'), ('week', 'This Week'),
+                                     ('month', 'This Month'),
+                                     ('year', 'Year')
+                                     ]
+                            )
+    """
+    , ('yesterday', 'Yesterday'),
+    ('lastWeek', 'Last Week'),
+    ('lastMonth', 'Last Month')"""
+
+    StartDate = TextField("Start Date")
+    """
+    ,[validators.Required("Please enter a valid date
+    range in iso8601 format")])
+    """
+
+    EndDate = TextField("End Date")
+    """
+    ,[validators.Required("Please enter a valid date
+    range in iso8601 format")])
+    """
+
+    Tag = TextField("Tag")  # ,
+    # [validators.Required("Enter a tag to filter events by")])
+
     billing_rate = TextField('Billing Rate')
     provider_email = TextField('Provider Email')
     provider_name = TextField('Provider Name')
@@ -41,7 +59,6 @@ class CalendarSelectForm(Form):
     provider_post_code = TextField('Provider Postal Code')
     provider_tax_rate = TextField('Provider Tax Rate')
     invoice_id = TextField('Invoice Number')
-    StartDate = TextField("Start Date")
-    EndDate = TextField("End Date")
-    
+    invoice_due_date=TextField('Invoice Due Date')
+
     submit = SubmitField("Send")

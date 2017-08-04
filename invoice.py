@@ -32,8 +32,9 @@ provider_city='Big City'
 provider_state='Blue State'
 provider_country='USA'
 provider_post_code='55555'
-provider_tax_rate=20
-invoice_id=1023
+provider_tax_rate=30
+invoice_due_date=30
+invoice_id = 1
 
 def main(invoiceItemsDct=invoiceItemsDct, calendar=calendar, eventType=eventType, project=project, 
          client_email=client_email,
@@ -51,8 +52,9 @@ def main(invoiceItemsDct=invoiceItemsDct, calendar=calendar, eventType=eventType
          provider_country=provider_country,
          provider_post_code=provider_post_code,
          provider_tax_rate=provider_tax_rate,
-         invoice_id=invoice_id,
          billing_rate=billing_rate,
+         invoice_due_date=invoice_due_date,
+         invoice_id=invoice_id,
          paid_status=False):
     """  """
 
@@ -61,8 +63,9 @@ def main(invoiceItemsDct=invoiceItemsDct, calendar=calendar, eventType=eventType
     # Paid stamp, optional
     doc.is_paid = paid_status
 
+    # Invoice info, optional
     doc.invoice_info = InvoiceInfo(invoice_id, datetime.now(), datetime.now() +
-                                   timedelta(days=30))
+                                   timedelta(days=invoice_due_date))
 
     # Service Provider Info, optional
     doc.service_provider_info = ServiceProviderInfo(
@@ -95,8 +98,8 @@ def main(invoiceItemsDct=invoiceItemsDct, calendar=calendar, eventType=eventType
     doc.set_item_tax_rate(provider_tax_rate)  # 20%
 
     # Transactions detail, optional
-    '''doc.add_transaction(Transaction('Paypal', 111, datetime.now(), 1))
-    doc.add_transaction(Transaction('Stripe', 222, date.today(), 2))'''
+    ''' doc.add_transaction(Transaction('Paypal', 111, datetime.now(), 1))
+    doc.add_transaction(Transaction('Stripe', 222, date.today(), 2)) '''
 
     # Optional  
     doc.set_bottom_tip("Email: " + provider_email + "<br />Don't hesitate to contact   us for any questions.")
