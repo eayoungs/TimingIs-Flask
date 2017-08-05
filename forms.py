@@ -34,7 +34,7 @@ class CalendarSelectForm(Form):
     ('lastWeek', 'Last Week'),
     ('lastMonth', 'Last Month')"""
 
-    StartDate = TextField("Start Date")
+    StartDate = TextField("Start Date") # TODO: (eayoungs@gmail)
     """
     ,[validators.Required("Please enter a valid date
     range in iso8601 format")])
@@ -59,6 +59,6 @@ class CalendarSelectForm(Form):
     provider_post_code = TextField('Provider Postal Code')
     provider_tax_rate = TextField('Provider Tax Rate')
     invoice_id = TextField('Invoice Number')
-    invoice_due_date=TextField('Invoice Due Date')
+    invoice_due_date=TextField('Days Until Invoice Due')
 
     submit = SubmitField("Send")
