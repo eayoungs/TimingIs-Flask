@@ -34,7 +34,7 @@ class CalendarSelectForm(Form):
     ('lastWeek', 'Last Week'),
     ('lastMonth', 'Last Month')"""
 
-    StartDate = TextField("Start Date") # TODO: (eayoungs@gmail)
+    StartDate = TextField("Start Date")
     """
     ,[validators.Required("Please enter a valid date
     range in iso8601 format")])
