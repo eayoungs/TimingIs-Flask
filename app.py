@@ -12,7 +12,8 @@ __license__ = "Apache 2.0"
 
 
 from oauth2client.client import OAuth2WebServerFlow, OAuth2Credentials
-from flask import Flask, render_template, session, url_for, request, redirect, send_file
+from flask import (Flask, render_template, session, url_for, request, redirect,
+                  send_file)
 import re
 import uuid
 import json
@@ -120,12 +121,38 @@ def google_oauth2():
                 #calWorkTypesDct={}
                 #titles=[]
                 #tables=[]
-                for key,value in calendarsSelectedDct.items():
+                for key, value in calendarsSelectedDct.items():
                     try:
                         eventTypesDct = dfs.get_unique_events(
-                                                     evStartEvEnd_calEvDfsDct, key)
-                        invoiceItemsDct = dfs.invoice_dict(eventTypesDct, form.Tag.data)
-                        invoice.main(invoiceItemsDct)
+                                                      evStartEvEnd_calEvDfsDct,
+                                                      key)
+                        invoiceItemsDct = dfs.invoice_dict(eventTypesDct,
+                                                           form.Tag.data)
+                        if form.billing_rate.data:
+                            billing_rate = form.billing_rate.data
+                        else:
+                            billing_rate = '1'
+                        if form.provider_tax_rate.data:
+                            provider_tax_rate = form.provider_tax_rate.data
+                        else:
+                            provider_tax_rate = 0
+                        if form.invoice_id.data:
+                            invoice_id=form.invoice_id.data
+                        else:
+                            invoice_id=1
+                        invoice.main(invoiceItemsDct,
+                                     billing_rate=billing_rate,
+                                     provider_email=form.provider_email.data,
+                                     client_email=form.client_email.data,
+                                     provider_name=form.provider_name.data,
+                                     provider_street=form.provider_street.data,
+                                     provider_city=form.provider_city.data,
+                                     provider_state=form.provider_state.data,
+                                     provider_country=form.provider_country.data,
+                                     provider_post_code=form.provider_post_code.data,
+                                     provider_tax_rate=provider_tax_rate,
+                                     invoice_id=invoice_id
+                                     )
 
                         #calDursSmry = dfs.get_cals_durs(workTypesDct)
                         #calDursDF_fmatSumCumCalTotHrs = dfs.summarize_cals_durs(
