@@ -109,18 +109,19 @@ def google_oauth2():
                                        linktext="https://myaccount.google.com/permissions"
                                        )
             else: # Reverse logical order of dicitonary (see ln73)
-                calendarsSelectedDct = {value:key for key,value in
-                          form.Calendars.choices if key in form.Calendars.data}
-                evStart_evEnd = ge.event_range(relRange=form.DateRange.data)
-                evStartEvEnd_eventsDct = ge.get_events(service, evStart_evEnd,
-                                                       calendarsSelectedDct)
-                #TODO (eayoungs@gmail.com): Test for empty dict (no events)
-                (evStart_evEnd, eventsDct) = evStartEvEnd_eventsDct
-                evStartEvEnd_calEvDfsDct = dfs.add_durations(
-                                                        evStartEvEnd_eventsDct)
-                #calWorkTypesDct={}
-                #titles=[]
-                #tables=[]
+                try:
+                    calendarsSelectedDct = {value:key for key,value in
+                              form.Calendars.choices if key in form.Calendars.data}
+                    evStart_evEnd = ge.event_range(relRange=form.DateRange.data)
+                    evStartEvEnd_eventsDct = ge.get_events(service, evStart_evEnd,
+                                                           calendarsSelectedDct)
+                    #TODO (eayoungs@gmail.com): Test for empty dict (no events)
+                    (evStart_evEnd, eventsDct) = evStartEvEnd_eventsDct
+                    evStartEvEnd_calEvDfsDct = dfs.add_durations(
+                                                            evStartEvEnd_eventsDct)
+                except Exception as e:
+                    print(e)
+
                 for key, value in calendarsSelectedDct.items():
                     try:
                         eventTypesDct = dfs.get_unique_events(
@@ -128,6 +129,18 @@ def google_oauth2():
                                                       key)
                         invoiceItemsDct = dfs.invoice_dict(eventTypesDct,
                                                            form.Tag.data)
+                    except Exception as e:
+                        print(e)
+                        return render_template('forms_template.html', form=form,
+                                       homeBttnClass="active",
+                                       homeUrl=BASE_URL,
+                                       aboutUrl=BASE_URL+"about",
+                                       contactUrl=BASE_URL+"contact",
+                                       quoteAttrib="Congratulations; you've authorized Timing.Is to access your Google Calendar data! To revoke #authorization visit your Google account @ ",
+                                       link="https://myaccount.google.com/permissions",
+                                       linktext="https://myaccount.google.com/permissions"
+                                       )
+                        
                         if form.billing_rate.data:
                             billing_rate = form.billing_rate.data
                         else:
@@ -154,32 +167,19 @@ def google_oauth2():
                                      invoice_id=invoice_id
                                      )
 
-                        #calDursSmry = dfs.get_cals_durs(workTypesDct)
-                        #calDursDF_fmatSumCumCalTotHrs = dfs.summarize_cals_durs(
-                        #                                               calDursSmry)
-                        #(calDursDF,
-                        # fmatSumCumCalTotHrs) =calDursDF_fmatSumCumCalTotHrs
-                        #
-                        #titles.append(key)
-                        #tables.append(calDursDF.to_html())
-                    except Exception as e:
-                        print(e)
-
-                    #calWorkTypesDct[key] = (calDursDF.to_html(),
-                    #                        fmatSumCumCalTotHrs)
-                return redirect(url_for('return_file'))
-                #return render_template('forms_filled_template.html', form=form,
-                #                       #titles=titles,
-                #                       #tables=tables,
-                #                       homeBttnClass="active",
-                #                       homeUrl=BASE_URL,
-                #                       aboutUrl=BASE_URL+"about",
-                #                       contactUrl=BASE_URL+"contact",
-                #                       quoteAttrib="Congratulations; you've authorized Timing.Is to access your Google Calendar data! To revoke #authorization visit your Google account @ ",
-                #                       subheading1=evStart_evEnd,
-                #                       link="https://myaccount.google.com/permissions",
-                #                       linktext="https://myaccount.google.com/permissions"
-                #                       )
+                try:
+                    return redirect(url_for('return_file'))
+                except Exception as e:
+                    print(e)
+                    return render_template('forms_template.html', form=form,
+                                       homeBttnClass="active",
+                                       homeUrl=BASE_URL,
+                                       aboutUrl=BASE_URL+"about",
+                                       contactUrl=BASE_URL+"contact",
+                                       quoteAttrib="Congratulations; you've authorized Timing.Is to access your Google Calendar data! To revoke #authorization visit your Google account @ ",
+                                       link="https://myaccount.google.com/permissions",
+                                       linktext="https://myaccount.google.com/permissions"
+                                       )
 
         elif request.method == 'GET':
             return render_template('forms_template.html', form=form,
