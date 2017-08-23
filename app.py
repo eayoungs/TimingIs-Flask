@@ -127,8 +127,11 @@ def google_oauth2():
                         eventTypesDct = dfs.get_unique_events(
                                                       evStartEvEnd_calEvDfsDct,
                                                       key)
-                        invoiceItemsDct = dfs.invoice_dict(eventTypesDct,
-                                                           form.Tag.data)
+                        if form.Tag.data:
+                          invoiceItemsDct = dfs.invoice_dict(eventTypesDct,
+                                                             form.Tag.data)
+                        else:
+                          invoiceItemsDct = dfs.invoice_dict(eventTypesDct)
                     except Exception as e:
                         print(e)
                         return render_template('forms_template.html', form=form,
