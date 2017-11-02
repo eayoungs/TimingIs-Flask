@@ -9,6 +9,8 @@ __license__ = "Apache 2.0"
     webapp; "timing.is" """
 
 
+import sys
+sys.path.append('../')
 import os
 import timingis
 import unittest
@@ -17,7 +19,7 @@ import tempfile
 
 class TimingisTestCase(unittest.TestCase):
 
-	def setUp(self):
+    def setUp(self):
         self.db_fd, timingis.app.config['DATABASE'] = tempfile.mkstemp()
         timingis.app.testing=True
         self.app = timingis.app.test_client()
