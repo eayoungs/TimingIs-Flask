@@ -1,6 +1,7 @@
 geepal>=0.1.1
 oauth2client==4.0.0
 Flask==0.12
+flask-login>=0.4.0
 gunicorn==19.6.0
 Flask_bootstrap==3.3.7.0
 jupyter==1.0.0
