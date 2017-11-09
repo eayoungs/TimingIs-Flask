@@ -25,7 +25,6 @@ from googleapiclient import discovery
 from geepal import get_events as ge
 from geepal import dfsort as dfs
 import invoice
-from timingis import app
 
 
 app = Flask(__name__)#app = create_app()
