@@ -5,17 +5,15 @@
     app to parse your Google Calendars. It also uses a library, written by the
     same author, to provide summary statistics about your events. """
 
-from flask_wtf import Form
-from wtforms import (TextField, IntegerField, TextAreaField, SubmitField,
-                     SelectField, SelectMultipleField, validators,
-                     ValidationError)
-
-""" Module level dunder names """
-
 __author__ = "Eric Allen Youngson"
 __email__ = "eayoungs@gmail.com"
 __copyright__ = "Copyright 2017 Eric Youngson"
 __license__ = "Apache 2.0"
+
+from flask_wtf import Form
+from wtforms import (TextField, IntegerField, TextAreaField, SubmitField,
+                     SelectField, SelectMultipleField, validators,
+                     ValidationError)
 
 
 class CalendarSelectForm(Form):
@@ -34,7 +32,7 @@ class CalendarSelectForm(Form):
     ('lastWeek', 'Last Week'),
     ('lastMonth', 'Last Month')"""
 
-    StartDate = TextField("Start Date") # TODO: (eayoungs@gmail)
+    StartDate = TextField("Start Date")  # TODO: (eayoungs@gmail)
     """
     ,[validators.Required("Please enter a valid date
     range in iso8601 format")])
@@ -59,7 +57,7 @@ class CalendarSelectForm(Form):
     provider_post_code = TextField('Provider Postal Code')
     provider_tax_rate = TextField('Provider Tax Rate')
     invoice_id = TextField('Invoice Number')
-    invoice_due_date=TextField('Days Until Invoice Due')
-    client_email=TextField('Client Email')
+    invoice_due_date = TextField('Days Until Invoice Due')
+    client_email = TextField('Client Email')
 
     submit = SubmitField("Send")
