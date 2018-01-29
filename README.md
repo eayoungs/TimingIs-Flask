@@ -1,7 +1,5 @@
 # Timing.Is
 
-https://timing.is/
-
 ## Description
 
 Simple application that converts selected google calendar events into itemized
